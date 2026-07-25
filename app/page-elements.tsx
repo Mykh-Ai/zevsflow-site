@@ -26,7 +26,7 @@ export function LegalLayout({ title, intro, children }: { title: string; intro: 
     <main id="main">
       <section className="legal-page section">
         <article className="shell legal-article">
-          <nav className="breadcrumbs" aria-label="Omrvinková navigácia"><Link href="/">OfficeFlow</Link><span aria-hidden="true">/</span><span>{title}</span></nav>
+          <nav className="breadcrumbs" aria-label="Omrvinková navigácia"><Link href="/">ZevsFlow</Link><span aria-hidden="true">/</span><span>{title}</span></nav>
           <p className="eyebrow"><span /> Verejné informácie</p>
           <h1>{title}</h1>
           <p className="legal-intro">{intro}</p>

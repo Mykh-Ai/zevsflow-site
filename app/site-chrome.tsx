@@ -11,7 +11,7 @@ export function SiteHeader() {
       <div className="shell nav-shell">
         <Link className="brand brand-with-tagline" href="/#top">
           <Mark />
-          <span><strong>OfficeFlow</strong><small>AI automatizácia na mieru</small></span>
+          <span><strong>ZevsFlow</strong><small>AI automatizácia na mieru</small></span>
         </Link>
         <nav aria-label="Hlavná navigácia">
           <Link href="/automatizacia-na-mieru">Automatizácia na mieru</Link>
@@ -29,7 +29,7 @@ export function SiteFooter() {
     <footer className="site-footer">
       <div className="shell footer-grid">
         <div>
-          <Link className="brand" href="/#top"><Mark />OfficeFlow</Link>
+          <Link className="brand" href="/#top"><Mark />ZevsFlow</Link>
           <p>AI automatizácia na mieru cez asistentov v Telegrame a WhatsAppe.</p>
           <p className="preview-status">Súkromný pracovný náhľad · nie verejná ponuka</p>
         </div>

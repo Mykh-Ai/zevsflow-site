@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { LegalLayout } from "../page-elements";
 
-export const metadata: Metadata = { title: "Cookies | OfficeFlow", description: "Informácie o cookies a meraní na webe OfficeFlow." };
+export const metadata: Metadata = { title: "Cookies | ZevsFlow", description: "Informácie o cookies a meraní na webe ZevsFlow." };
 
 export default function CookiesPage() {
   return <LegalLayout title="Cookies" intro="Aktuálny pracovný náhľad nepoužíva Google Analytics, reklamné pixely, heatmapy ani marketingové cookies.">

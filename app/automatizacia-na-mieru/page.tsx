@@ -3,7 +3,7 @@ import Link from "next/link";
 import { PageHero } from "../page-elements";
 
 export const metadata: Metadata = {
-  title: "AI automatizácia na mieru | OfficeFlow",
+  title: "AI automatizácia na mieru | ZevsFlow",
   description: "Firemný AI asistent v Telegrame alebo WhatsAppe pre jeden jasne definovaný opakujúci sa proces. Pilot od 200 €.",
 };
 
@@ -19,7 +19,7 @@ const examples = [
 export default function CustomAutomationPage() {
   return (
     <main id="main">
-      <PageHero eyebrow="AI automatizácia na mieru" title="Jeden jasný firemný proces. Asistent pripravený pre vašu firmu." lead="OfficeFlow prepája pohodlnú konverzáciu v Telegrame alebo WhatsAppe s kontrolovanou automatizáciou na pozadí. Začíname jednou opakujúcou sa úlohou, pri ktorej vieme presne určiť vstupy, pravidlá, výnimky a výsledok." />
+      <PageHero eyebrow="AI automatizácia na mieru" title="Jeden jasný firemný proces. Asistent pripravený pre vašu firmu." lead="ZevsFlow prepája pohodlnú konverzáciu v Telegrame alebo WhatsAppe s kontrolovanou automatizáciou na pozadí. Začíname jednou opakujúcou sa úlohou, pri ktorej vieme presne určiť vstupy, pravidlá, výnimky a výsledok." />
 
       <section className="section compact-top">
         <div className="shell process-definition">
@@ -30,7 +30,7 @@ export default function CustomAutomationPage() {
             <div><dt>Kontrola</dt><dd>Náhľad, otázka na chýbajúci údaj alebo potvrdenie zodpovednou osobou.</dd></div>
             <div><dt>Výsledok</dt><dd>Záznam, dokument, odpoveď, report, upozornenie alebo ďalší systémový krok.</dd></div>
             <div><dt>Výnimky</dt><dd>Neznámy dodávateľ, nečitateľný doklad, duplicita alebo údaj mimo povoleného rozsahu.</dd></div>
-            <div><dt>Prevádzka</dt><dd>Server klienta alebo dohodnuté spravované prostredie OfficeFlow.</dd></div>
+            <div><dt>Prevádzka</dt><dd>Server klienta alebo dohodnuté spravované prostredie ZevsFlow.</dd></div>
           </dl>
         </div>
       </section>
@@ -44,10 +44,10 @@ export default function CustomAutomationPage() {
       </section>
 
       <section className="section deployment-section">
-        <div className="shell"><div className="section-heading narrow"><p className="eyebrow"><span /> Prevádzka</p><h2>Vyberiete si, kde riešenie beží.</h2><p>Spôsob prevádzky nemení základnú myšlienku produktu, ale mení zodpovednosti, prístupy, podporu a podmienky spracovania údajov.</p></div><div className="deployment-grid"><article><span className="card-label">Infraštruktúra klienta</span><h3>Server a údaje pod vašou kontrolou</h3><ul><li>server, databáza a Google credentials patria klientovi;</li><li>tokeny zostávajú v prostredí klienta;</li><li>OfficeFlow má prístup iba počas dohodnutej inštalácie alebo podpory;</li><li>rozsah logov, záloh a aktualizácií sa dohodne vopred.</li></ul></article><article><span className="card-label managed">Spravované prostredie</span><h3>Jednoduchší štart bez vlastného servera</h3><ul><li>oddelené technické prostredie podľa dohodnutého modelu;</li><li>popísané uchovávanie, zálohy a monitoring;</li><li>zmluvné rozdelenie zodpovedností a spracovania údajov;</li><li>presný rozsah podpory a prevádzky v ponuke.</li></ul></article></div></div>
+        <div className="shell"><div className="section-heading narrow"><p className="eyebrow"><span /> Prevádzka</p><h2>Vyberiete si, kde riešenie beží.</h2><p>Spôsob prevádzky nemení základnú myšlienku produktu, ale mení zodpovednosti, prístupy, podporu a podmienky spracovania údajov.</p></div><div className="deployment-grid"><article><span className="card-label">Infraštruktúra klienta</span><h3>Server a údaje pod vašou kontrolou</h3><ul><li>server, databáza a Google credentials patria klientovi;</li><li>tokeny zostávajú v prostredí klienta;</li><li>ZevsFlow má prístup iba počas dohodnutej inštalácie alebo podpory;</li><li>rozsah logov, záloh a aktualizácií sa dohodne vopred.</li></ul></article><article><span className="card-label managed">Spravované prostredie</span><h3>Jednoduchší štart bez vlastného servera</h3><ul><li>oddelené technické prostredie podľa dohodnutého modelu;</li><li>popísané uchovávanie, zálohy a monitoring;</li><li>zmluvné rozdelenie zodpovedností a spracovania údajov;</li><li>presný rozsah podpory a prevádzky v ponuke.</li></ul></article></div></div>
       </section>
 
-      <section className="section final-cta"><div className="shell final-cta-inner"><p className="eyebrow light"><span /> Prvý krok</p><h2>Ktorý proces vám každý týždeň berie čas?</h2><p>Stačí opísať jednu konkrétnu situáciu. Nemusíte pripravovať technické zadanie.</p><div className="cta-row"><a className="button button-light" href="mailto:officezevs2024@gmail.com?subject=OfficeFlow%20%E2%80%93%20m%C3%B4j%20proces">Prebrať môj proces</a><Link className="text-link light-link" href="/data-a-bezpecnost">Ako pracujeme s dátami →</Link></div></div></section>
+      <section className="section final-cta"><div className="shell final-cta-inner"><p className="eyebrow light"><span /> Prvý krok</p><h2>Ktorý proces vám každý týždeň berie čas?</h2><p>Stačí opísať jednu konkrétnu situáciu. Nemusíte pripravovať technické zadanie.</p><div className="cta-row"><a className="button button-light" href="mailto:officezevs2024@gmail.com?subject=ZevsFlow%20%E2%80%93%20m%C3%B4j%20proces">Prebrať môj proces</a><Link className="text-link light-link" href="/data-a-bezpecnost">Ako pracujeme s dátami →</Link></div></div></section>
     </main>
   );
 }

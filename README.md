@@ -1,7 +1,6 @@
-# OfficeFlow website
+# ZevsFlow website
 
-Source code for the OfficeFlow marketing and compliance website currently
-published as a private OpenAI Sites preview.
+Source code for the ZevsFlow marketing and compliance website.
 
 ## Stack
 
@@ -81,9 +80,10 @@ metadata.
 
 ## Assets
 
-- `public/media/officeflow-demo.mp4` — product workflow demo
-- `public/media/officeflow-demo-poster.webp` — video poster
+- `public/media/zevsflow-demo.mp4` — product workflow demo
+- `public/media/zevsflow-demo-poster.webp` — video poster
 - `public/favicon.svg`
+- `public/opengraph-image.png`
 - `public/file.svg`
 - `public/globe.svg`
 - `public/window.svg`
@@ -98,11 +98,7 @@ site is ready for a public launch.
 
 ## Hosting
 
-`.openai/hosting.json` identifies the existing OpenAI Sites project and is kept
-to preserve the exact current hosting configuration. This GitHub repository
-is a portable source copy; the currently deployed `chatgpt.site` version still
-depends on the separate internal Sites source repository and deployment
-lifecycle unless it is explicitly reconfigured later.
-
-No DNS or Cloudflare custom-domain configuration is part of this repository
-transfer.
+`.openai/hosting.json` identifies the earlier OpenAI Sites project and is kept
+only to preserve that deployment identity. The portable production build is
+Cloudflare Workers-compatible. The primary production hostname is
+`https://zevsflow.sk`; indexing remains disabled until the public launch gate.
