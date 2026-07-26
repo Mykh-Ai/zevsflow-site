@@ -1,6 +1,6 @@
 # ZevsFlow website
 
-Source code for the ZevsFlow marketing and compliance website.
+Source code for the ZevsFlow marketing, pilot-application, and compliance website.
 
 ## Stack
 
@@ -9,7 +9,7 @@ Source code for the ZevsFlow marketing and compliance website.
 - TypeScript
 - Vinext and Vite
 - Cloudflare Workers-compatible production output
-- Plain CSS in `app/globals.css`
+- Plain CSS in `app/globals.css` and `app/pilot.css`
 - Locally bundled Inter and Manrope fonts under `.vinext/fonts/`
 
 ## Requirements
@@ -64,12 +64,14 @@ npm test
 ```
 
 `npm test` performs a production build and then checks rendered metadata,
-public routes, the demo video, `robots.txt`, `sitemap.xml`, and the branded 404
-response.
+public routes, the demo video, pilot pricing, `robots.txt`, `sitemap.xml`, the
+branded 404 response, and the bounded Worker validation/email side-effect
+contract for pilot applications.
 
 ## Routes
 
 - `/`
+- `/pilot`
 - `/automatizacia-na-mieru`
 - `/data-a-bezpecnost`
 - `/privacy`
@@ -80,8 +82,31 @@ response.
 - `/support`
 - `/robots.txt`
 - `/sitemap.xml`
+- `/api/pilot-config`
+- `/api/pilot-application`
 
 Unknown paths are handled by `app/not-found.tsx`.
+
+## Pilot application flow
+
+The public `/pilot` page presents:
+
+- one bounded process pilot for `200 €`;
+- the statement that Zevs s. r. o. is not a VAT payer;
+- implementation from `750 €` after pilot evaluation;
+- a non-binding questionnaire without files or payment.
+
+The browser fetches public runtime readiness from `/api/pilot-config`. The form
+is enabled only when the Worker has both Turnstile secrets and the restricted
+`EMAIL` binding. Submissions are validated deterministically, verified through
+Turnstile Siteverify, and sent to `officezevs2024@gmail.com`. The Worker does
+not create a D1, KV, or R2 lead record.
+
+Cloudflare account setup and live acceptance steps are documented in
+`docs/CLOUDFLARE_PILOT_FORM_SETUP.md`.
+
+The approved architecture proof is stored in
+`docs/architecture/PUBLIC_PILOT_APPLICATION_FLOW_ARCHITECTURE_DESIGN_PROOF.md`.
 
 ## Assets
 
@@ -102,11 +127,12 @@ Canonical site metadata and the launch gate are centralized in
 
 `app/layout.tsx` applies the matching `noindex, nofollow` metadata, and
 `app/robots.ts` disallows crawling. `app/sitemap.ts` already defines the
-canonical `.sk` route set so the same reviewed route list is ready for the
-public launch.
+canonical `.sk` route set, including `/pilot`, so the reviewed route list is
+ready for public launch.
 
 Do not flip the flag until the requirements in
-`docs/PUBLIC_LAUNCH_CHECKLIST.md` are complete.
+`docs/PUBLIC_LAUNCH_CHECKLIST.md` are complete and the live form acceptance test
+has passed.
 
 ## Hosting
 
