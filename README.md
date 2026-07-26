@@ -63,8 +63,9 @@ npm run lint
 npm test
 ```
 
-`npm test` performs a production build and then checks the rendered routes and
-metadata.
+`npm test` performs a production build and then checks rendered metadata,
+public routes, the demo video, `robots.txt`, `sitemap.xml`, and the branded 404
+response.
 
 ## Routes
 
@@ -77,6 +78,10 @@ metadata.
 - `/google-data`
 - `/data-deletion`
 - `/support`
+- `/robots.txt`
+- `/sitemap.xml`
+
+Unknown paths are handled by `app/not-found.tsx`.
 
 ## Assets
 
@@ -91,10 +96,17 @@ metadata.
 
 ## SEO and indexing
 
-The current private preview intentionally declares `noindex, nofollow` through
-the Next.js metadata in `app/layout.tsx`. There is no standalone `robots.txt`
-or sitemap in this version. Do not remove the noindex configuration until the
-site is ready for a public launch.
+Canonical site metadata and the launch gate are centralized in
+`app/site-config.ts`. Public indexing remains intentionally disabled while
+`PUBLIC_INDEXING_ENABLED` is `false`.
+
+`app/layout.tsx` applies the matching `noindex, nofollow` metadata, and
+`app/robots.ts` disallows crawling. `app/sitemap.ts` already defines the
+canonical `.sk` route set so the same reviewed route list is ready for the
+public launch.
+
+Do not flip the flag until the requirements in
+`docs/PUBLIC_LAUNCH_CHECKLIST.md` are complete.
 
 ## Hosting
 
