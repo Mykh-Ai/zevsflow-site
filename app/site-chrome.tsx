@@ -18,7 +18,7 @@ export function SiteHeader() {
           <Link href="/#ukazka">Ukážka</Link>
           <Link href="/data-a-bezpecnost">Dáta a bezpečnosť</Link>
         </nav>
-        <Link className="button button-small" href="/#kontakt">Prebrať asistenta</Link>
+        <Link className="button button-small" href="/pilot">Pilot za 200 €</Link>
       </div>
     </header>
   );
@@ -31,7 +31,7 @@ export function SiteFooter() {
         <div>
           <Link className="brand" href="/#top"><Mark />ZevsFlow</Link>
           <p>AI automatizácia na mieru cez asistentov v Telegrame a WhatsAppe.</p>
-          <p className="preview-status">Súkromný pracovný náhľad · nie verejná ponuka</p>
+          <Link className="footer-link" href="/pilot">Pilot jedného procesu za 200 €</Link>
         </div>
         <div>
           <strong>Prevádzkovateľ</strong>
