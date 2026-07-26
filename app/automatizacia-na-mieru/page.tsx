@@ -4,7 +4,7 @@ import { PageHero } from "../page-elements";
 
 export const metadata: Metadata = {
   title: "AI automatizácia na mieru | ZevsFlow",
-  description: "Firemný AI asistent v Telegrame alebo WhatsAppe pre jeden jasne definovaný opakujúci sa proces. Pilot od 200 €.",
+  description: "Firemný AI asistent v Telegrame alebo WhatsAppe pre jeden jasne definovaný opakujúci sa proces. Pilot za 200 €.",
 };
 
 const examples = [
@@ -40,14 +40,14 @@ export default function CustomAutomationPage() {
       </section>
 
       <section className="section dark-section">
-        <div className="shell"><div className="section-heading narrow"><p className="eyebrow light"><span /> Spolupráca</p><h2>Od rozhovoru k overenému pilotu.</h2></div><ol className="sales-steps"><li><span>01</span><div><h3>Krátky rozhovor</h3><p>Ukážete, kde vzniká rutina, zdržanie alebo opakované prepisovanie.</p></div></li><li><span>02</span><div><h3>Mapa aktuálneho procesu</h3><p>Spíšeme vstupy, pravidlá, systémy, výnimky a zodpovedné osoby.</p></div></li><li><span>03</span><div><h3>Výber jedného problému</h3><p>Určíme hranicu pilotu a merateľný výsledok.</p></div></li><li><span>04</span><div><h3>Platený pilot · 200 €</h3><p>Overíme funkciu na obmedzenom procese a dohodnutých vzorkách údajov.</p></div></li><li><span>05</span><div><h3>Vyhodnotenie</h3><p>Spoločne posúdime úsporu času, presnosť, výnimky a potrebné úpravy.</p></div></li><li><span>06</span><div><h3>Implementácia · od 750 €</h3><p>Rozšírenie, integrácie a prevádzka sa nacenia podľa skutočného rozsahu.</p></div></li></ol></div>
+        <div className="shell"><div className="section-heading narrow"><p className="eyebrow light"><span /> Spolupráca</p><h2>Od rozhovoru k overenému pilotu.</h2></div><ol className="sales-steps"><li><span>01</span><div><h3>Krátky rozhovor</h3><p>Ukážete, kde vzniká rutina, zdržanie alebo opakované prepisovanie.</p></div></li><li><span>02</span><div><h3>Mapa aktuálneho procesu</h3><p>Spíšeme vstupy, pravidlá, systémy, výnimky a zodpovedné osoby.</p></div></li><li><span>03</span><div><h3>Výber jedného problému</h3><p>Určíme hranicu pilotu a merateľný výsledok.</p></div></li><li><span>04</span><div><h3>Platený pilot · 200 €</h3><p>Cena je konečná. Zevs s. r. o. nie je platiteľom DPH.</p></div></li><li><span>05</span><div><h3>Vyhodnotenie</h3><p>Spoločne posúdime úsporu času, presnosť, výnimky a potrebné úpravy.</p></div></li><li><span>06</span><div><h3>Implementácia · od 750 €</h3><p>Rozšírenie, integrácie a prevádzka sa nacenia podľa skutočného rozsahu.</p></div></li></ol></div>
       </section>
 
       <section className="section deployment-section">
         <div className="shell"><div className="section-heading narrow"><p className="eyebrow"><span /> Prevádzka</p><h2>Vyberiete si, kde riešenie beží.</h2><p>Spôsob prevádzky nemení základnú myšlienku produktu, ale mení zodpovednosti, prístupy, podporu a podmienky spracovania údajov.</p></div><div className="deployment-grid"><article><span className="card-label">Infraštruktúra klienta</span><h3>Server a údaje pod vašou kontrolou</h3><ul><li>server, databáza a Google credentials patria klientovi;</li><li>tokeny zostávajú v prostredí klienta;</li><li>ZevsFlow má prístup iba počas dohodnutej inštalácie alebo podpory;</li><li>rozsah logov, záloh a aktualizácií sa dohodne vopred.</li></ul></article><article><span className="card-label managed">Spravované prostredie</span><h3>Jednoduchší štart bez vlastného servera</h3><ul><li>oddelené technické prostredie podľa dohodnutého modelu;</li><li>popísané uchovávanie, zálohy a monitoring;</li><li>zmluvné rozdelenie zodpovedností a spracovania údajov;</li><li>presný rozsah podpory a prevádzky v ponuke.</li></ul></article></div></div>
       </section>
 
-      <section className="section final-cta"><div className="shell final-cta-inner"><p className="eyebrow light"><span /> Prvý krok</p><h2>Ktorý proces vám každý týždeň berie čas?</h2><p>Stačí opísať jednu konkrétnu situáciu. Nemusíte pripravovať technické zadanie.</p><div className="cta-row"><a className="button button-light" href="mailto:officezevs2024@gmail.com?subject=ZevsFlow%20%E2%80%93%20m%C3%B4j%20proces">Prebrať môj proces</a><Link className="text-link light-link" href="/data-a-bezpecnost">Ako pracujeme s dátami →</Link></div></div></section>
+      <section className="section final-cta"><div className="shell final-cta-inner"><p className="eyebrow light"><span /> Prvý krok</p><h2>Ktorý proces vám každý týždeň berie čas?</h2><p>Stačí opísať jednu konkrétnu situáciu. Nemusíte pripravovať technické zadanie ani posielať dokumenty.</p><div className="cta-row"><Link className="button button-light" href="/pilot">Požiadať o pilot za 200 €</Link><Link className="text-link light-link" href="/data-a-bezpecnost">Ako pracujeme s dátami →</Link></div></div></section>
     </main>
   );
 }
