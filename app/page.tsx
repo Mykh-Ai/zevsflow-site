@@ -37,7 +37,7 @@ export default function Home() {
               <h1>Firemný AI asistent <em>priamo v messengeri.</em></h1>
               <p className="lead">Z telefónu zadáte hlasom alebo textom, čo potrebujete. Asistent sa prispôsobí procesom a pravidlám vašej firmy a v Telegrame alebo WhatsAppe vráti kontrolovaný výsledok.</p>
               <div className="messenger-row" aria-label="Podporované vstupy"><span>Telegram</span><span>WhatsApp</span><span>Hlas</span><span>Text</span><span>Foto a PDF</span></div>
-              <div className="hero-actions"><a className="button" href="#ukazka">Pozrieť ukážku</a><a className="button button-ghost" href="#kontakt">Prebrať môj proces</a></div>
+              <div className="hero-actions"><a className="button" href="#ukazka">Pozrieť ukážku</a><Link className="button button-ghost" href="/pilot">Pilot za 200 €</Link></div>
               <div className="trust-line"><span className="trust-icon" aria-hidden="true">⌁</span><p><strong>Vyberiete si spôsob prevádzky.</strong> Asistent môže bežať vo vašej infraštruktúre alebo v spravovanom prostredí ZevsFlow podľa dohody.</p></div>
             </div>
             <ProcessDemo compact />
@@ -99,6 +99,29 @@ export default function Home() {
 
         <section className="section comparison-section"><div className="shell"><div className="section-heading"><p className="eyebrow"><span /> Rozdiel</p><h2>Nie ďalší chat. Pracovný nástroj vašej firmy.</h2></div><div className="comparison-table" role="table"><div className="comparison-head" role="row"><span>Bežný AI chat</span><span>ZevsFlow</span></div>{comparison.map(([chat, office]) => <div className="comparison-row" role="row" key={chat}><span>{chat}</span><span>{office}</span></div>)}</div></div></section>
 
+        <section className="section offers-section" id="pilot">
+          <div className="shell">
+            <div className="section-heading narrow"><p className="eyebrow"><span /> Spolupráca</p><h2>Najskôr overíme jeden proces.</h2><p>Nezačíname neurčitým veľkým projektom. Pilot má jasnú cenu a hranicu; produkčná implementácia sa nacení podľa skutočného rozsahu.</p></div>
+            <div className="offer-grid">
+              <article className="offer-card primary-card">
+                <span className="card-label">Platený pilot</span>
+                <h3>Jeden proces za 200 €.</h3>
+                <p>Určíme vstupy, pravidlá, výnimky a očakávaný výsledok a overíme funkčné riešenie na dohodnutých vzorkách údajov.</p>
+                <div className="price"><strong>200 €</strong><span>Konečná cena · Zevs s. r. o. nie je platiteľom DPH</span></div>
+                <div className="card-boundary">Žiadosť nie je objednávkou ani záväzkom zaplatiť. Najskôr overíme, či sa proces zmestí do rozsahu pilotu.</div>
+                <Link className="button" href="/pilot">Požiadať o pilot</Link>
+              </article>
+              <article className="offer-card">
+                <span className="card-label">Po overení</span>
+                <h3>Implementácia od 750 €.</h3>
+                <p>Rozšírenie, integrácie, produkčná prevádzka a podpora sa nacenia podľa reálneho rozsahu a zvoleného modelu prevádzky.</p>
+                <div className="price secondary"><strong>od 750 €</strong><span>Individuálna ponuka po vyhodnotení pilotu</span></div>
+                <Link className="button button-ghost" href="/automatizacia-na-mieru">Pozrieť priebeh spolupráce</Link>
+              </article>
+            </div>
+          </div>
+        </section>
+
         <section className="section deployment-section" id="prevadzka">
           <div className="shell">
             <div className="section-heading narrow"><p className="eyebrow"><span /> Spôsob prevádzky</p><h2>Vaša infraštruktúra alebo spravované prostredie.</h2><p>Funkčný cieľ zostáva rovnaký. Spolu vyberieme model podľa interných pravidiel, rozpočtu, dostupnej infraštruktúry a požadovanej podpory.</p></div>
@@ -116,7 +139,7 @@ export default function Home() {
 
         <section className="section security-section"><div className="shell security-grid"><div><p className="eyebrow"><span /> Bezpečnosť</p><h2>Kontrola je súčasť produktu.</h2></div><div className="security-points"><div><span>01</span><p><strong>Minimum kontextu.</strong> AI dostane iba údaje potrebné pre konkrétnu úlohu.</p></div><div><span>02</span><p><strong>Potvrdenie.</strong> Dôležité kroky čakajú na človeka.</p></div><div><span>03</span><p><strong>Oddelené prostredia.</strong> Rozsah uloženia a prístupu sa nastaví podľa zvoleného modelu prevádzky.</p></div><div><span>04</span><p><strong>Tajomstvá mimo kódu.</strong> Tokeny a prístupové údaje nepatria do repozitára ani logov.</p></div></div></div></section>
 
-        <section className="section final-cta" id="kontakt"><div className="shell final-cta-inner"><p className="eyebrow light"><span /> Prvý krok</p><h2>Čo by mal váš asistent vybaviť priamo v messengeri?</h2><p>Ukážte jeden opakujúci sa proces. Spoločne určíme vstupy, pravidlá, potvrdenie, výsledok aj spôsob prevádzky.</p><a className="button button-light" href="mailto:officezevs2024@gmail.com">Napísať ZevsFlow</a></div></section>
+        <section className="section final-cta" id="kontakt"><div className="shell final-cta-inner"><p className="eyebrow light"><span /> Prvý krok</p><h2>Pilot jedného procesu za 200 €.</h2><p>Krátko opíšte, čo dnes opakovane robíte ručne. Najskôr overíme, či sa proces zmestí do rozsahu pilotu. Na stránke sa neplatí.</p><Link className="button button-light" href="/pilot">Požiadať o pilot</Link></div></section>
       </main>
     </>
   );

@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { LegalLayout } from "../page-elements";
 
 export const metadata: Metadata = { title: "Kontakt a podpora | ZevsFlow", description: "Kontakt pre obchodné otázky, podporu, ochranu súkromia a bezpečnostné hlásenia ZevsFlow." };
 
 export default function SupportPage() {
   return <LegalLayout title="Kontakt a podpora" intro="Napíšte nám, s čím potrebujete pomôcť alebo ktorý opakujúci sa firemný proces chcete zjednodušiť.">
-    <section><h2>Obchodný dopyt</h2><p>Opíšte jeden opakujúci sa proces, vstupy a požadovaný výsledok. Email: <a href="mailto:officezevs2024@gmail.com?subject=ZevsFlow%20%E2%80%93%20obchodn%C3%BD%20dopyt">officezevs2024@gmail.com</a>.</p></section>
+    <section><h2>Pilot jedného procesu</h2><p>Pre platený pilot za 200 € použite krátku <Link href="/pilot">žiadosť o pilot</Link>. Formulár neprijíma súbory ani platby a jeho odoslanie nie je objednávkou.</p></section>
+    <section><h2>Všeobecný obchodný dopyt</h2><p>Email: <a href="mailto:officezevs2024@gmail.com?subject=ZevsFlow%20%E2%80%93%20obchodn%C3%BD%20dopyt">officezevs2024@gmail.com</a>.</p></section>
     <section><h2>Technická podpora</h2><p>Uveďte názov firmy, dotknutú funkciu, približný čas problému a bezpečný opis chyby. Neposielajte heslá, OAuth tokeny, API kľúče ani celé citlivé dokumenty.</p></section>
     <section><h2>Ochrana súkromia a vymazanie</h2><p>Do predmetu správy napíšte „Súkromie“ alebo „Vymazanie údajov“. Postup nájdete aj na stránke <a href="/data-deletion">Vymazanie údajov</a>.</p></section>
     <section><h2>Bezpečnostné hlásenie</h2><p>Pri podozrení na únik, neoprávnený prístup alebo zverejnený token označte predmet „BEZPEČNOSŤ“. Neprikladajte aktívne tajomstvá; stačí popis, dotknutý systém a bezpečný spôsob spätného kontaktu.</p></section>

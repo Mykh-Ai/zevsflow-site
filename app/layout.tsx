@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Manrope } from "next/font/google";
 import "./globals.css";
+import "./pilot.css";
 import { SiteFooter, SiteHeader } from "./site-chrome";
 import {
   PUBLIC_INDEXING_ENABLED,
