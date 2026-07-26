@@ -12,15 +12,6 @@ export function PageHero({ eyebrow, title, lead }: { eyebrow: string; title: str
   );
 }
 
-export function DraftNotice({ children }: { children?: React.ReactNode }) {
-  return (
-    <aside className="draft-notice" aria-label="Stav dokumentu">
-      <strong>Pracovný návrh</strong>
-      <p>{children ?? "Text je pripravený ako podklad. Pred verejným spustením a použitím pri Google OAuth ho musí skontrolovať slovenský právny špecialista."}</p>
-    </aside>
-  );
-}
-
 export function LegalLayout({ title, intro, children }: { title: string; intro: string; children: React.ReactNode }) {
   return (
     <main id="main">
@@ -30,8 +21,7 @@ export function LegalLayout({ title, intro, children }: { title: string; intro: 
           <p className="eyebrow"><span /> Verejné informácie</p>
           <h1>{title}</h1>
           <p className="legal-intro">{intro}</p>
-          <p className="updated">Posledná aktualizácia pracovného návrhu: 19. júla 2026</p>
-          <DraftNotice />
+          <p className="updated">Posledná aktualizácia: 26. júla 2026</p>
           <div className="legal-content">{children}</div>
         </article>
       </section>
