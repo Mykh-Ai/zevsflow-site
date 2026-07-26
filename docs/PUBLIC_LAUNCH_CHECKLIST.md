@@ -17,6 +17,7 @@ Redirect domain: `https://zevsflow.eu` → `https://zevsflow.sk`
 - Canonical, Open Graph, Twitter, favicon, and Slovak locale metadata exist.
 - Legal and Google information routes exist.
 - A custom 404 page, `robots.txt`, and `sitemap.xml` are defined.
+- `officezevs2024@gmail.com` is accepted as the public contact for the first commercial stage.
 
 ## Current launch gate
 
@@ -30,17 +31,7 @@ Both page metadata and `robots.txt` use this value. Do not change it until the b
 
 ## Blocking items before public indexing
 
-### 1. Branded email addresses
-
-Create and verify the production contact addresses before replacing the current Gmail address:
-
-- `info@zevsflow.sk`
-- `support@zevsflow.sk`
-- `privacy@zevsflow.sk`
-
-Replace the temporary Gmail address in contact calls to action, support, privacy, and data-deletion pages only after mail delivery and replies are tested.
-
-### 2. Legal review
+### 1. Legal review
 
 The current legal pages are explicitly marked as working drafts. A Slovak legal specialist must review at least:
 
@@ -52,7 +43,7 @@ The current legal pages are explicitly marked as working drafts. A Slovak legal 
 
 Do not remove the draft notice or describe the text as final before that review.
 
-### 3. Product and data-processing truth
+### 2. Product and data-processing truth
 
 Before public launch, document only the services that actually run. Confirm and publish the real values for:
 
@@ -67,7 +58,7 @@ Before public launch, document only the services that actually run. Confirm and 
 
 Do not fill these fields with planned behavior presented as current behavior.
 
-### 4. Final production verification
+### 3. Final production verification
 
 Verify after the final deploy:
 
@@ -80,23 +71,32 @@ Verify after the final deploy:
 - no OfficeFlow name, old preview hostname, token, secret, or internal path is exposed;
 - mobile layout and keyboard navigation remain usable.
 
-### 5. Google OAuth launch gate
+### 4. Google OAuth launch gate
 
 Before a public Google OAuth flow is enabled, align the verified domain, OAuth branding, requested scopes, privacy policy, Google-data page, deletion procedure, and the actual application behavior.
 
+## Non-blocking later improvement
+
+After the first commercial revenue, a branded domain mailbox may replace or supplement the current Gmail contact, for example:
+
+- `info@zevsflow.sk`
+- `support@zevsflow.sk`
+- `privacy@zevsflow.sk`
+
+This is a branding and operational improvement, not a prerequisite for the first sale or for the current launch stage.
+
 ## Public launch procedure
 
-1. Finish branded email setup and update the site copy.
-2. Complete legal and product-truth review.
-3. Run `npm run lint`.
-4. Run `npm test`.
-5. Change `PUBLIC_INDEXING_ENABLED` to `true` in `app/site-config.ts`.
-6. Run lint and tests again.
-7. Deploy the exact reviewed commit.
-8. Confirm that page metadata no longer contains `noindex`.
-9. Confirm that `/robots.txt` allows crawling.
-10. Confirm that `/sitemap.xml` lists the canonical `.sk` URLs.
-11. Add `zevsflow.sk` to Google Search Console and submit the sitemap.
+1. Complete legal and product-truth review.
+2. Run `npm run lint`.
+3. Run `npm test`.
+4. Change `PUBLIC_INDEXING_ENABLED` to `true` in `app/site-config.ts`.
+5. Run lint and tests again.
+6. Deploy the exact reviewed commit.
+7. Confirm that page metadata no longer contains `noindex`.
+8. Confirm that `/robots.txt` allows crawling.
+9. Confirm that `/sitemap.xml` lists the canonical `.sk` URLs.
+10. Add `zevsflow.sk` to Google Search Console and submit the sitemap.
 
 ## Rollback
 
