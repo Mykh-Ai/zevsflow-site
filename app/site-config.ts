@@ -11,6 +11,7 @@ export const PUBLIC_INDEXING_ENABLED = false;
 
 export const PUBLIC_ROUTES = [
   "/",
+  "/pilot",
   "/automatizacia-na-mieru",
   "/data-a-bezpecnost",
   "/privacy",
