@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-async function fetchRoute(path, suffix) {
+async function fetchRoute(path, suffix, env = {}) {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-${suffix}`);
   const { default: worker } = await import(workerUrl.href);
@@ -14,6 +14,7 @@ async function fetchRoute(path, suffix) {
       ASSETS: {
         fetch: async () => new Response("Not found", { status: 404 }),
       },
+      ...env,
     },
     {
       waitUntil() {},
@@ -62,8 +63,22 @@ test("renders the real ZevsFlow demo as user-controlled video", async () => {
   assert.doesNotMatch(html, /<video[^>]*\bautoplay/i);
 });
 
-test("renders product, security, and public information routes", async () => {
+test("makes the pilot and implementation prices visible on the homepage", async () => {
+  const response = await fetchRoute("/", "pilot-offer");
+  const html = await response.text();
+
+  assert.equal(response.status, 200);
+  assert.match(html, /href="\/pilot"/i);
+  assert.match(html, /Pilot za 200/i);
+  assert.match(html, /Implement(?:á|&#xE1;)cia od 750/i);
+  assert.match(html, /nie je platite(?:ľ|&#x13E;)om DPH/i);
+  assert.doesNotMatch(html, /S(?:ú|&#xFA;)kromn(?:ý|&#xFD;) pracovn(?:ý|&#xFD;) n(?:á|&#xE1;)h(?:ľ|&#x13E;)ad/i);
+  assert.doesNotMatch(html, /nie verejn(?:á|&#xE1;) ponuka/i);
+});
+
+test("renders product, pilot, security, and public information routes", async () => {
   const routes = [
+    "/pilot",
     "/automatizacia-na-mieru",
     "/data-a-bezpecnost",
     "/privacy",
@@ -85,6 +100,19 @@ test("renders product, security, and public information routes", async () => {
   }
 });
 
+test("renders the pilot scope without payment or file-upload controls", async () => {
+  const response = await fetchRoute("/pilot", "pilot-page");
+  const html = await response.text();
+
+  assert.equal(response.status, 200);
+  assert.match(html, /Pilot jed(?:n|ného|n&#xE9;ho) procesu za 200/i);
+  assert.match(html, /nie je platite(?:ľ|&#x13E;)om DPH/i);
+  assert.match(html, /Implement(?:á|&#xE1;)cia od 750/i);
+  assert.match(html, /nie je objedn(?:á|&#xE1;)vkou/i);
+  assert.doesNotMatch(html, /type="file"/i);
+  assert.doesNotMatch(html, /checkout|platobn(?:á|&#xE1;) br(?:á|&#xE1;)na/i);
+});
+
 test("serves robots and sitemap from the canonical domain", async () => {
   const robotsResponse = await fetchRoute("/robots.txt", "robots");
   const robots = await robotsResponse.text();
@@ -100,8 +128,19 @@ test("serves robots and sitemap from the canonical domain", async () => {
 
   assert.equal(sitemapResponse.status, 200);
   assert.match(sitemap, /<loc>https:\/\/zevsflow\.sk\/<\/loc>/i);
+  assert.match(sitemap, /<loc>https:\/\/zevsflow\.sk\/pilot<\/loc>/i);
   assert.match(sitemap, /<loc>https:\/\/zevsflow\.sk\/automatizacia-na-mieru<\/loc>/i);
   assert.match(sitemap, /<loc>https:\/\/zevsflow\.sk\/data-deletion<\/loc>/i);
+});
+
+test("keeps the pilot form disabled until Cloudflare runtime bindings are configured", async () => {
+  const response = await fetchRoute("/api/pilot-config", "pilot-config");
+  const body = await response.json();
+
+  assert.equal(response.status, 200);
+  assert.equal(body.enabled, false);
+  assert.equal(body.siteKey, null);
+  assert.equal(body.fallbackEmail, "officezevs2024@gmail.com");
 });
 
 test("renders a branded 404 page with a real 404 status", async () => {
