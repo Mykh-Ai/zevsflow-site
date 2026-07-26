@@ -98,9 +98,11 @@ The public `/pilot` page presents:
 
 The browser fetches public runtime readiness from `/api/pilot-config`. The form
 is enabled only when the Worker has both Turnstile secrets and the restricted
-`EMAIL` binding. Submissions are validated deterministically, verified through
-Turnstile Siteverify, and sent to `officezevs2024@gmail.com`. The Worker does
-not create a D1, KV, or R2 lead record.
+`EMAIL` binding. The binding is operational only after Cloudflare Email Routing
+is enabled for `zevsflow.sk` and the destination Gmail address is verified.
+Submissions are validated deterministically, verified through Turnstile
+Siteverify, and sent to `officezevs2024@gmail.com`. The Worker does not create a
+D1, KV, or R2 lead record.
 
 Cloudflare account setup and live acceptance steps are documented in
 `docs/CLOUDFLARE_PILOT_FORM_SETUP.md`.
