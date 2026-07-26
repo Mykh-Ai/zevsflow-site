@@ -114,10 +114,12 @@ test("renders a branded 404 page with a real 404 status", async () => {
   assert.match(html, /href="\/support"/i);
 });
 
-test("marks legal copy as a working draft", async () => {
-  const response = await fetchRoute("/privacy", "legal");
+test("keeps internal launch commentary out of public support pages", async () => {
+  const response = await fetchRoute("/support", "support-copy");
   const html = await response.text();
 
-  assert.match(html, /Pracovn(?:ý|&#xFD;) n(?:á|&#xE1;)vrh/i);
-  assert.match(html, /slovensk(?:ý|&#xFD;) pr(?:á|&#xE1;)vny/i);
+  assert.match(html, /Napíšte nám/i);
+  assert.doesNotMatch(html, /Pracovn(?:ý|&#xFD;) n(?:á|&#xE1;)vrh/i);
+  assert.doesNotMatch(html, /slovensk(?:ý|&#xFD;) pr(?:á|&#xE1;)vny špecialista/i);
+  assert.doesNotMatch(html, /samostatn(?:ých|&#xFD;ch) dom(?:é|&#xE9;)nov(?:ých|&#xFD;ch) adries/i);
 });
