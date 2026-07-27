@@ -295,7 +295,7 @@ Do not publish as available without explicit approval:
 
 ### “Stojí OfficeFlow 200 €?”
 
-> Nie. OfficeFlow začína od 7 € mesačne v štandardnom modeli. Suma 200 € je cena pilotu jedného procesu pre riešenie na mieru alebo pre OfficeFlow nasadený mimo štandardného modelu.
+> Nie. OfficeFlow začína od 7 € mesačne v štandardnom modeli. Suma 200 € je cena pilotu jedného procesu pre riešenie na mieru або для OfficeFlow nasadený mimo štandardného modelu.
 
 ### “Nahrádza OfficeFlow účtovníka?”
 
