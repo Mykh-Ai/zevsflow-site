@@ -10,11 +10,39 @@
 
 The current website mixes three different entities:
 
-1. **Zevs s. r. o.** — legal operator and contracting company;
-2. **ZevsFlow** — brand for custom business-process automation;
-3. **OfficeFlow** — the first proprietary product created under ZevsFlow.
+1. **Zevs s. r. o.** — the legal operator and contracting company;
+2. **ZevsFlow** — the brand and delivery model for custom automation;
+3. **OfficeFlow** — the owner's existing Telegram assistant/product with the ability to connect additional users.
 
-The target website must make this hierarchy obvious and separate the OfficeFlow product journey from the custom-automation pilot journey.
+The target architecture must explain not only the brand hierarchy, but also the commercial boundary between standard OfficeFlow use and ZevsFlow custom work.
+
+### Canonical commercial model
+
+**OfficeFlow standard service**
+
+- the existing OfficeFlow Telegram bot;
+- runs on ZevsFlow infrastructure;
+- additional users can be connected;
+- available from `7 € / mesiac` when the existing functionality is sufficient;
+- light configuration is possible within this model, including examples such as:
+  - invoice layout;
+  - work-time sheet layout;
+  - company profile and basic presentation settings;
+- this is not a `200 €` pilot.
+
+**ZevsFlow custom project**
+
+A ZevsFlow pilot is the correct route when the customer needs any of the following:
+
+- a process outside the OfficeFlow standard functional core;
+- broader functional changes or new integrations;
+- OfficeFlow-based functionality deployed on the customer's own server;
+- a separately designed assistant for the customer's business;
+- a custom architecture, hosting model, rules, or workflow that requires project work.
+
+The pilot price is `200 €` for one bounded process. Production implementation is priced separately after the pilot.
+
+The resulting custom assistant may use any name chosen by the customer. The name **OfficeFlow** identifies the owner's existing product, not every assistant built by ZevsFlow.
 
 ### User-visible outcome
 
@@ -23,14 +51,17 @@ A visitor must understand:
 - what ZevsFlow is;
 - what OfficeFlow is;
 - which OfficeFlow functions already work;
-- that OfficeFlow starts from `7 € / mesiac` when its existing standard functionality is sufficient;
-- that additional setup, templates, integrations and non-standard work are priced separately;
-- that the `200 €` pilot belongs only to custom automation;
-- where to go for OfficeFlow, custom automation, support and data/security information.
+- when OfficeFlow from `7 € / mesiac` is suitable;
+- which light configuration can remain within the standard service;
+- when the request becomes a ZevsFlow custom pilot;
+- that the customer's custom assistant does not have to be called OfficeFlow;
+- that the `200 €` pilot is not the OfficeFlow monthly price.
 
 ### Risk
 
 `medium-high` because the site is public and indexed, commercial wording changes, and the existing pilot form has an email side effect.
+
+---
 
 ## 2. Baseline And Local Commit Guard
 
@@ -46,20 +77,24 @@ The local commit is not available on GitHub. Its content must not be guessed.
 
 Before implementation, the agent must:
 
-1. verify `HEAD` and a clean working tree;
+1. verify that local `HEAD` is `3a551dd295294728c148137b43acd2a400049d89` and the working tree is clean;
 2. inspect:
    - `git show --stat --oneline 3a551dd295294728c148137b43acd2a400049d89`;
    - `git show --name-status 3a551dd295294728c148137b43acd2a400049d89`;
    - `git diff 921f42047f9e1237fa1081b001b7d183166ce219..3a551dd295294728c148137b43acd2a400049d89`;
-3. determine whether it changes indexing, metadata, robots, sitemap, tests, Cloudflare config, routes or homepage copy;
+3. determine whether it changes indexing, metadata, robots, sitemap, tests, Cloudflare config, routes, or homepage copy;
 4. preserve its intent;
-5. never hard-reset, overwrite or silently drop it.
+5. never hard-reset, overwrite, or silently drop it.
+
+No implementation handoff may claim a complete read-only audit until this reconciliation is performed.
+
+---
 
 ## 3. Architecture Classification
 
-This is a material redesign of public information architecture and conversion routing.
+This is a material redesign of public website information architecture and conversion routing.
 
-It is **not** a new OfficeFlow/FakturaBot top-level action, FSM or callback flow. It changes only the marketing website and preserves the existing bounded pilot form.
+It is not a new OfficeFlow/FakturaBot top-level action, FSM, callback, or Telegram runtime flow. It changes the marketing website and preserves the existing bounded pilot form.
 
 ### Existing owners
 
@@ -73,93 +108,128 @@ It is **not** a new OfficeFlow/FakturaBot top-level action, FSM or callback flow
 - `app/site-config.ts::PUBLIC_ROUTES`
 - `app/layout.tsx::metadata`
 
-### New route owners
+### New proposed route owners
 
 - `app/officeflow/page.tsx::OfficeFlowPage`
 - `app/kontakt/page.tsx::ContactDecisionPage`
 
+---
+
 ## 4. Canonical Public Actions
-
-### `explore_zevsflow`
-
-Learn about custom automation services.  
-Owners: `/` and `/automatizacia-na-mieru`.  
-Side effect: none.
 
 ### `explore_officeflow`
 
-Learn about the existing OfficeFlow product and its available functions.  
-Owner: `/officeflow`.  
-Side effect: none.
+Learn about the existing OfficeFlow Telegram product, available functions, ZevsFlow-hosted model, price from `7 € / mesiac`, and light configuration boundary.
+
+**Owner:** `/officeflow`  
+**Side effect:** none
+
+### `request_officeflow_standard`
+
+Express interest in using the existing OfficeFlow product on ZevsFlow infrastructure.
+
+**Correct when:**
+
+- the existing functional core is sufficient;
+- only light configuration is needed;
+- the customer accepts ZevsFlow-hosted operation.
+
+**Owner:** `/kontakt#officeflow-standard`  
+**V1 side effect:** explicit user-clicked email only
+
+### `explore_zevsflow_custom`
+
+Learn about custom automation services, including custom processes and custom OfficeFlow-based deployments.
+
+**Owner:** `/automatizacia-na-mieru`  
+**Side effect:** none
 
 ### `request_custom_pilot`
 
-Submit a non-binding request for one bounded custom process pilot for `200 €`.  
-Owner: `/pilot` and the current Worker API.  
-Side effect: one validated email after successful server-side checks.
+Submit a non-binding request for one bounded ZevsFlow pilot for `200 €`.
 
-### `contact_about_officeflow`
+This action covers both:
 
-Express interest in an OfficeFlow demonstration or implementation.  
-Owner: `/kontakt`.  
-V1 side effect: explicit user-clicked `mailto:` only.  
-No new API, CRM, database or payment.
+1. a process outside the OfficeFlow standard core;
+2. an OfficeFlow-based solution that requires the customer's own server, broader customization, new integrations, or custom architecture.
+
+**Owner:** `/pilot` and the existing Worker API  
+**Side effect:** one validated email after server-side checks
 
 ### `request_support`
 
-Open existing support information.  
-Owner: `/support`.
+Open existing support information.
+
+**Owner:** `/support`
+
+---
 
 ## 5. Semantic Boundary Matrix
 
-| User meaning | Correct route/action | Must not become |
-|---|---|---|
-| Wants invoices, receipts, incoming invoices or work-time functions | OfficeFlow | custom pilot by default |
-| Wants a new order/email/approval workflow | custom automation | OfficeFlow feature claim |
-| Wants to understand the product | `/officeflow` | form submission |
-| Wants a `200 €` pilot | `/pilot` | OfficeFlow purchase |
-| Asks OfficeFlow price | explain `od 7 € mesačne` for existing standard functionality | `200 €` pilot price |
-| Needs support | `/support` | sales funnel |
-| Asks about Google data | data/security routes | sales form |
-| Asks for full accounting or tax filing | boundary explanation | accountant-replacement promise |
-| Asks about bank statements | only approved current-status wording | automatic “available” claim |
+| User meaning / example | Correct answer or route | Why | Must not become |
+|---|---|---|---|
+| “Chcem hotového asistenta na faktúry, bločky a pracovný čas.” | Offer OfficeFlow from `7 € / mesiac` if ZevsFlow hosting, existing functions, and light configuration are sufficient | This is the existing OfficeFlow product | automatic custom pilot |
+| The same customer requires deployment on their own server | ZevsFlow custom pilot | The hosting/architecture boundary changes | `7 €` standard OfficeFlow promise |
+| The same customer needs major new functions or integrations | ZevsFlow custom pilot | The request exceeds standard/light configuration | claim that everything is included in OfficeFlow monthly price |
+| “Potrebujem automatizovať prijímanie objednávok z troch systémov.” | ZevsFlow custom pilot | This is a distinct cross-system custom process | OfficeFlow feature claim |
+| “Ako funguje váš produkt?” | `/officeflow` | Product information request | pilot form submission |
+| “Čo viete automatizovať na mieru?” | `/automatizacia-na-mieru` | Service information request | OfficeFlow-only route |
+| “Koľko stojí OfficeFlow?” | Explain `od 7 € mesačne` on ZevsFlow infrastructure with existing functions and light configuration | Approved standard service boundary | `200 €` pilot price |
+| “Chcem vlastný server.” | ZevsFlow custom pilot | Client-hosted deployment is project work | standard OfficeFlow monthly plan |
+| “Chcem vlastného asistenta s iným názvom.” | ZevsFlow custom pilot | Custom assistant may use the customer's chosen name | force the OfficeFlow name |
+| “Mám problém s už nasadeným riešením.” | `/support` | Existing-client support path | new sales lead |
+| “Ako používate Google Drive?” | data/security route | Compliance information | sales form |
+| “Zatvorte mi účtovníctvo za rok.” | boundary explanation | OfficeFlow is not an accountant | guaranteed capability |
 
-### Ambiguous: “Chcem asistenta pre firmu”
+### Required answer example
 
-Route by need:
+**Question:** `Potrebujem automatizovať prijímanie objednávok z troch systémov.`
 
-- invoices, receipts, incoming invoices, analytics, work time, Google Drive → OfficeFlow;
-- other workflows → custom automation.
+**Canonical answer:**
 
-### Ambiguous: “Chcem automatizovať doklady”
+> Prijímanie objednávok z troch systémov nie je štandardná funkcia OfficeFlow. Ide o automatizáciu na mieru cez ZevsFlow.
+>
+> Najskôr v pilote za 200 € overíme jeden presne ohraničený proces: z ktorých systémov objednávky prichádzajú, aké údaje treba prevziať, ako ich zjednotiť, ktoré výnimky musí riešiť človek a aký má byť výsledok.
+>
+> Ak sa riešenie potvrdí, produkčná implementácia, integrácie a prevádzka sa nacenia podľa skutočného rozsahu. Výsledný asistent môže mať vlastný názov a fungovať v infraštruktúre klienta alebo v dohodnutom spravovanom prostredí.
 
-Show OfficeFlow first. Offer custom automation only when the requested process exceeds OfficeFlow's approved boundary.
+---
 
-## 6. Product Truth
+## 6. Structured Decision Slots
 
-### Zevs s. r. o.
+| Slot | Allowed values | Meaning | Boundary |
+|---|---|---|---|
+| `solutionType` | `officeflow_standard`, `officeflow_custom`, `custom_assistant`, `support`, `data_security` | requested commercial path | never infer a write side effect |
+| `hostingModel` | `zevsflow_hosted`, `client_hosted`, `unknown` | where the assistant runs | `client_hosted` routes to custom pilot |
+| `customizationLevel` | `none`, `light`, `broad`, `unknown` | degree of requested change | `light` may remain in OfficeFlow standard; `broad` routes to custom pilot |
+| `productName` | `officeflow`, `customer_selected`, `unknown` | public name of the assistant | custom assistant does not have to use OfficeFlow name |
+| `capabilityFit` | `standard_fit`, `outside_standard`, `unknown` | whether existing OfficeFlow functions are enough | outside standard routes to pilot |
+| `contactTopic` | `officeflow_standard`, `officeflow_custom`, `custom_process`, `support` | contact decision | no automatic form submission |
 
-- legal operator;
-- contracting entity;
-- appears in legal pages, footer, offers and agreements.
+### Resolution order
 
-### ZevsFlow
+1. Does the request fit the existing OfficeFlow functional core?
+2. Is ZevsFlow-hosted operation acceptable?
+3. Is only light configuration needed?
+4. If all three are true, route to OfficeFlow standard from `7 € / mesiac`.
+5. If any answer is no, route to the ZevsFlow custom pilot.
 
-- brand for custom automation on demand;
-- serves small businesses, SZČO and micro-enterprises;
-- is not the OfficeFlow product itself.
+---
 
-### OfficeFlow
+## 7. OfficeFlow Product Truth
 
-- first proprietary ZevsFlow product;
-- an administrative assistant with an existing working core;
-- adapted to the client's company profile, rules, templates and integrations;
-- standard existing functionality is available from `7 € / mesiac`;
-- additional configuration, integrations and non-standard extensions are priced separately.
+OfficeFlow is:
 
-### Approved available OfficeFlow functions
+- the owner's existing Telegram bot/product;
+- able to connect additional users;
+- operated on ZevsFlow infrastructure in the standard service model;
+- available from `7 € / mesiac` when the existing functional core is sufficient;
+- compatible with light configuration such as invoice and work-time sheet layouts;
+- not the generic name for every assistant built by ZevsFlow.
 
-These seven functions already work and must not be labelled `partial`, `MVP`, `limited`, `planned` or `experimental`:
+### Approved available functions
+
+These seven capabilities already work and must not be labelled `partial`, `MVP`, `limited`, `planned`, or `experimental`:
 
 1. outgoing invoices;
 2. receipts (`bločky`);
@@ -169,42 +239,86 @@ These seven functions already work and must not be labelled `partial`, `MVP`, `l
 6. work-time tracking;
 7. Google Drive integration.
 
+### Light configuration within OfficeFlow standard
+
+Public copy may state that light configuration is possible, including examples such as:
+
+- invoice layout;
+- work-time sheet layout;
+- company details and basic presentation settings.
+
+This must not become a promise that every template change, integration, business rule, or workflow extension is included in `7 € / mesiac`.
+
+### Custom boundary
+
+The request becomes a ZevsFlow custom project when it requires:
+
+- the customer's own server;
+- new integrations;
+- a new process outside the OfficeFlow standard core;
+- major functional extension;
+- custom architecture or security model;
+- a separately designed assistant.
+
+A custom assistant may be named by the customer.
+
 ### Unresolved public claims
 
 Do not publish as available without explicit approval:
 
 - bank statements;
-- Gmail intake as a product feature;
+- Gmail intake as an OfficeFlow product feature;
 - monthly closing preparation;
 - annual closing preparation;
 - WhatsApp as a current OfficeFlow channel;
-- cashflow, VAT, tax or full-accounting analytics.
+- cashflow, VAT, tax, or full-accounting analytics.
 
-### Safe pricing answers
+---
 
-**Koľko stojí OfficeFlow?**
+## 8. Safe Product Answers
 
-> Ak firme vyhovuje existujúci štandardný funkcional, OfficeFlow je dostupný od 7 € mesačne. Dodatočná konfigurácia, šablóny, integrácie alebo neštandardné rozšírenia sa naceňujú osobitne.
+### “Čo je OfficeFlow?”
 
-**Stojí OfficeFlow 200 €?**
+> OfficeFlow je existujúci Telegram asistent ZevsFlow pre faktúry, bločky, prijaté faktúry, prehľady výdavkov a faktúr, pracovný čas a Google Drive. K OfficeFlow možno pripájať ďalších používateľov.
 
-> Nie. 200 € je cena ohraničeného pilotu jedného procesu v službe automatizácie na mieru. OfficeFlow je samostatný produkt dostupný od 7 € mesačne, ak postačuje jeho existujúci funkcional.
+### “Koľko stojí OfficeFlow?”
 
-**Nahrádza OfficeFlow účtovníka?**
+> Ak vám vyhovuje existujúci funkcional, prevádzka na infraštruktúre ZevsFlow a stačí ľahké prispôsobenie, napríklad vzhľad faktúry alebo výkazu pracovného času, OfficeFlow je dostupný od 7 € mesačne.
 
-> Nie. OfficeFlow spracúva a organizuje firemné údaje a podklady v podporovanom rozsahu; nenahrádza odbornú účtovnú ani daňovú zodpovednosť.
+### “Kedy potrebujem pilot?”
 
-## 7. Target Route Map
+> Pilot ZevsFlow za 200 € je potrebný, keď chcete vlastný server, širšiu úpravu OfficeFlow, nové integrácie alebo úplne iný firemný proces. Po pilote sa samostatne nacení produkčná implementácia a prevádzka.
+
+### “Musí sa môj asistent volať OfficeFlow?”
+
+> Nie. OfficeFlow je názov existujúceho produktu ZevsFlow. Asistent vytvorený na mieru môže mať názov, ktorý si zvolí zákazník.
+
+### “Stojí OfficeFlow 200 €?”
+
+> Nie. OfficeFlow začína od 7 € mesačne v štandardnom modeli. Suma 200 € je cena pilotu jedného procesu pre riešenie na mieru alebo pre OfficeFlow nasadený mimo štandardného modelu.
+
+### “Nahrádza OfficeFlow účtovníka?”
+
+> Nie. OfficeFlow spracúva a organizuje údaje a podklady v podporovanom rozsahu; nenahrádza odbornú účtovnú ani daňovú zodpovednosť.
+
+---
+
+## 9. Target Route Map
 
 ```text
 /
 ├── /officeflow
-│   └── /kontakt#officeflow
+│   ├── /kontakt#officeflow-standard
+│   │   └── OfficeFlow on ZevsFlow infrastructure, from 7 €/month
+│   └── /pilot
+│       └── own server / broader customization / new integrations
 ├── /automatizacia-na-mieru
 │   └── /pilot
+│       └── custom process or custom assistant
 ├── /kontakt
-│   ├── OfficeFlow -> mailto in V1
-│   ├── custom automation -> /pilot
+│   ├── OfficeFlow standard -> explicit email in V1
+│   ├── OfficeFlow custom/client-hosted -> /pilot
+│   ├── other custom automation -> /pilot
 │   └── existing client -> /support
 ├── /data-a-bezpecnost
 ├── /privacy
@@ -217,65 +331,70 @@ Do not publish as available without explicit approval:
 
 ### Homepage role
 
-The homepage sells ZevsFlow as custom automation and exposes OfficeFlow as its first product.
+The homepage presents ZevsFlow as the company brand for automation and clearly introduces OfficeFlow as the existing product.
 
 Primary actions:
 
 - `Pozrieť OfficeFlow`
 - `Automatizácia na mieru`
 
-The `200 €` pilot must not be the universal Hero action.
+The `200 €` pilot must not appear as the universal first step for every OfficeFlow customer.
 
 ### `/officeflow`
 
-Owns:
+Must explain:
 
-- product explanation;
-- seven available functions;
-- demo;
-- adaptation model;
+- what OfficeFlow is;
+- the seven available functions;
+- Telegram and additional-user model;
+- ZevsFlow-hosted standard service;
 - price from `7 € / mesiac`;
-- one-time and non-standard work boundary;
-- safety and accountant-replacement boundary;
-- OfficeFlow-specific contact CTA.
+- light configuration examples;
+- the boundary that own-server or broader work goes through a ZevsFlow pilot;
+- two distinct CTAs:
+  - `Chcem OfficeFlow od 7 € mesačne`;
+  - `Potrebujem vlastný server alebo širšiu úpravu`.
 
 ### `/automatizacia-na-mieru`
 
 Owns:
 
-- custom processes outside or beyond OfficeFlow;
-- one-process method;
-- pilot for `200 €`;
-- implementation from `750 €` for custom automation.
+- custom processes outside OfficeFlow;
+- custom assistants;
+- custom OfficeFlow-based deployment and integration work;
+- one-process pilot for `200 €`;
+- production implementation priced separately.
 
 ### `/pilot`
 
-Remains only the bounded custom-automation pilot form. It is not an OfficeFlow order form.
+Remains the bounded ZevsFlow pilot form.
 
-### `/kontakt`
+It may receive requests for:
 
-A decision hub, not a duplicate form:
+- a completely custom process;
+- a custom assistant;
+- OfficeFlow on the customer's server;
+- OfficeFlow with broad customization or new integrations.
 
-- OfficeFlow interest → explicit `mailto:`;
-- custom automation → `/pilot`;
-- support → `/support`.
+It is not the OfficeFlow monthly subscription form.
 
-## 8. State Graph
+---
 
-### Navigation
+## 10. Navigation State Graph
 
 ```text
 HOME
   -> OFFICEFLOW_INFORMATION
-      -> OFFICEFLOW_CONTACT_DECISION
+      -> OFFICEFLOW_STANDARD_CONTACT
+      -> OFFICEFLOW_CUSTOM_DECISION
+          -> ZEVSFLOW_PILOT
   -> CUSTOM_AUTOMATION_INFORMATION
-      -> PILOT_INFORMATION
-          -> PILOT_FORM
+      -> ZEVSFLOW_PILOT
   -> DATA_SECURITY
   -> SUPPORT
 ```
 
-### Existing pilot form
+### Existing pilot form state graph
 
 ```text
 LOADING_CONFIG
@@ -288,19 +407,21 @@ LOADING_CONFIG
           -> TURNSTILE_ERROR -> READY
 ```
 
-No new persistent FSM, localStorage, cookie, D1, KV, R2 or CRM state is introduced.
+No new persistent FSM, localStorage, cookie, D1, KV, R2, or CRM state is introduced.
 
-## 9. Decision, Confirmation And Callback Contract
+---
 
-### Product/service choice
+## 11. Confirmation And Side-Effect Contract
 
-Normal route links only. Repeated navigation is safe and has no write side effect.
+### OfficeFlow standard contact
 
-### OfficeFlow contact
+- explicit visitor action;
+- opens a pre-addressed email in V1;
+- no automatic submission;
+- no payment;
+- no contract creation.
 
-An explicit visitor click opens a pre-addressed email. No automatic submission occurs.
-
-### Pilot submission
+### ZevsFlow pilot submission
 
 Preserve the existing contract:
 
@@ -310,31 +431,25 @@ Preserve the existing contract:
 - duplicate submit blocked while submitting;
 - stale or failed Turnstile fails closed;
 - success only after successful email delivery;
-- submission is not an order, contract, invoice or payment obligation.
+- submission is not an order, contract, invoice, or payment obligation.
 
-## 10. Side Effects And Ownership
+### Side effects
 
 | Side effect | Trigger | Owner | Guard |
 |---|---|---|---|
-| route navigation | link click | browser/Next | valid href |
-| OfficeFlow email client | explicit contact click | browser | user action |
+| route navigation | explicit link click | browser/Next | valid route |
+| OfficeFlow standard email | explicit contact click | browser | user action |
 | Turnstile verification | valid pilot submit | Worker | same origin, config, validation |
 | pilot email | verified pilot submit | `env.EMAIL.send` | server validation + Turnstile |
 | sitemap/metadata update | deploy | Next build | tests |
 
-The redesign must not add:
+The redesign must not add payment, file upload, CRM, D1, KV, R2, analytics cookies, or new external processors.
 
-- payment;
-- file upload;
-- lead database;
-- CRM write;
-- marketing subscription;
-- analytics cookies;
-- new external processors.
+---
 
-## 11. Existing Pilot Slot Contract
+## 12. Existing Pilot Slot Contract
 
-Preserve these fields and their validation:
+Preserve the current fields and validation:
 
 - `businessType`
 - `companyName`
@@ -350,28 +465,30 @@ Preserve these fields and their validation:
 - `turnstileToken`
 - honeypot `website`
 
-An OfficeFlow lead must not be silently forced into these one-custom-process slots.
+The form may be used for OfficeFlow custom/client-hosted work, but not for a normal OfficeFlow standard subscription from `7 € / mesiac`.
 
-## 12. Authorization And Precision Boundaries
+---
 
-### New public routes
+## 13. Authorization And Precision Boundaries
+
+### Public routes
 
 - unauthenticated and read-only;
 - no tenant context;
 - no OfficeFlow production-data access;
 - no OAuth connection;
-- no personal-data collection in V1.
+- no personal-data collection except the existing pilot form and explicit email contact.
 
 ### Existing pilot API
 
 Preserve:
 
 - same-origin POST;
-- strict JSON and size limit;
+- strict JSON and size limits;
 - bounded enums and lengths;
 - privacy acknowledgement;
 - honeypot;
-- server-side Turnstile action and hostname checks;
+- server-side Turnstile checks;
 - restricted email binding;
 - no sensitive body logging;
 - no D1/KV/R2 lead storage.
@@ -380,41 +497,49 @@ Preserve:
 
 The website may say:
 
-- OfficeFlow `od 7 € mesačne` when existing standard functionality is sufficient;
-- extra configuration, integrations and non-standard extensions are separate.
+- OfficeFlow starts from `7 € / mesiac` on ZevsFlow infrastructure;
+- light configuration such as invoice or work-time sheet layout is possible;
+- own-server, broader customization, new integrations, or a different process require a ZevsFlow pilot for `200 €`;
+- production implementation is priced separately after the pilot.
 
 It must not say:
 
 - every OfficeFlow deployment costs exactly `7 €`;
-- all customization is included in `7 €`;
-- OfficeFlow costs `200 €`;
-- custom implementation from `750 €` is automatically the OfficeFlow price.
+- every customization is included in `7 €`;
+- light layout changes always require a pilot;
+- OfficeFlow on the customer's server is included in the standard monthly price;
+- every custom assistant is called OfficeFlow;
+- the `200 €` pilot is the OfficeFlow subscription price.
 
-## 13. Negative Space And Regression Contract
+---
+
+## 14. Negative Space And Regression Contract
 
 The migration must not:
 
-1. rename the company, domain, repository or ZevsFlow brand;
-2. turn the homepage into an OfficeFlow-only landing page;
-3. keep calling ZevsFlow itself the product assistant;
-4. hide OfficeFlow as merely a generic example;
-5. send OfficeFlow prospects directly to the custom pilot without explanation;
-6. apply the `200 €` pilot price to OfficeFlow;
-7. hide or contradict `OfficeFlow od 7 € mesačne`;
-8. imply that `7 €` includes every customization, integration or hosting model;
-9. apply `Implementácia od 750 €` automatically to OfficeFlow;
-10. mark the seven approved functions as partial or experimental;
-11. publish unresolved functions as available;
-12. weaken Turnstile, validation, email or fail-closed behavior;
-13. add payment, file upload, CRM, D1, KV or R2 lead storage;
-14. remove legal or Google-data routes;
-15. break canonical `.sk` URLs or `.eu` redirects;
-16. disable indexing without an explicit rollback decision;
-17. omit `/officeflow` or `/kontakt` from sitemap and route tests;
-18. reset or overwrite local commit `3a551dd...`;
-19. preserve tests that contradict actual indexing configuration;
-20. invent testimonials, customer counts, savings or guarantees;
-21. modify OfficeFlow/FakturaBot runtime code.
+1. rename the company, domain, repository, or ZevsFlow brand;
+2. call ZevsFlow itself the OfficeFlow bot;
+3. describe every assistant built by ZevsFlow as OfficeFlow;
+4. hide that OfficeFlow is the owner's existing Telegram bot/product;
+5. hide that additional users can be connected to OfficeFlow;
+6. hide or contradict `OfficeFlow od 7 € mesačne`;
+7. route every OfficeFlow lead automatically to the pilot;
+8. claim that light invoice/work-time layout configuration always requires a pilot;
+9. claim that own-server deployment is included in the standard OfficeFlow monthly price;
+10. limit the pilot only to processes unrelated to OfficeFlow;
+11. apply the `200 €` pilot price as the OfficeFlow monthly price;
+12. force the OfficeFlow name on a custom client assistant;
+13. mark the seven approved capabilities as partial or experimental;
+14. publish unresolved functions as available;
+15. weaken Turnstile, validation, email, or fail-closed behavior;
+16. add payment, file upload, CRM, D1, KV, or R2 lead storage;
+17. remove legal or Google-data routes;
+18. break canonical `.sk` URLs or `.eu` redirects;
+19. omit `/officeflow` or `/kontakt` from sitemap and route tests;
+20. reset or overwrite local commit `3a551dd...`;
+21. preserve tests that contradict actual indexing configuration;
+22. invent testimonials, customer counts, savings, or guarantees;
+23. modify OfficeFlow/FakturaBot runtime code.
 
 ### Known remote inconsistency
 
@@ -422,92 +547,118 @@ Remote `main` currently has `PUBLIC_INDEXING_ENABLED = true`, while rendered tes
 
 The local commit may already fix this. It must be inspected before changing tests.
 
-## 14. Acceptance Scenarios
+---
 
-### A1 — Brand hierarchy
+## 15. Acceptance Scenarios
 
-Opening `/` clearly distinguishes ZevsFlow service from OfficeFlow product and shows separate CTAs.
+### A1 — Standard OfficeFlow fit
 
-### A2 — OfficeFlow route
+**Input:** customer wants invoices, receipts, incoming invoices, analytics, work time, and Google Drive.  
+**Conditions:** ZevsFlow-hosted operation is acceptable and only light configuration is needed.  
+**Expected:** offer OfficeFlow from `7 € / mesiac`.  
+**Must not:** force the customer into the pilot.
 
-`/officeflow` returns `200`, shows all seven approved functions as available, and contains no partial/MVP labels.
+### A2 — Light OfficeFlow configuration
 
-### A3 — OfficeFlow price
+**Input:** customer wants a different invoice layout or work-time sheet layout.  
+**Expected:** explain that light configuration is possible within the OfficeFlow standard model.  
+**Must not:** automatically classify it as broad custom work.
 
-`/officeflow` states `od 7 € mesačne` and explains that additional customization and integrations are separate.
+### A3 — OfficeFlow on customer server
 
-### A4 — Price separation
+**Input:** customer wants the same OfficeFlow functions on their own server.  
+**Expected:** route to ZevsFlow pilot for `200 €`; implementation priced separately.  
+**Must not:** promise the `7 €` standard plan.
 
-OfficeFlow is never described as the `200 €` pilot. The pilot remains a custom-automation offer.
+### A4 — OfficeFlow broad extension
 
-### A5 — Custom service
+**Input:** customer wants new integrations or major functional changes.  
+**Expected:** route to ZevsFlow pilot.  
+**Must not:** claim all changes are included in the monthly price.
 
-`/automatizacia-na-mieru` explains the bounded custom process, pilot price and custom implementation boundary.
+### A5 — Distinct custom process
 
-### A6 — OfficeFlow contact
+**Input:** `Potrebujem automatizovať prijímanie objednávok z troch systémov.`  
+**Expected:** explain that this is ZevsFlow custom automation, offer the `200 €` pilot, and explain separate production pricing.  
+**Must not:** call it a standard OfficeFlow function.
 
-OfficeFlow CTA leads to `/kontakt#officeflow`, not directly to the pilot form.
+### A6 — Customer-selected assistant name
 
-### A7 — Pilot happy path
+**Input:** customer wants a custom assistant with their own name.  
+**Expected:** allow any customer-selected name.  
+**Must not:** require the name OfficeFlow.
+
+### A7 — OfficeFlow route
+
+`/officeflow` returns `200`, shows seven available functions, Telegram/additional-user model, price from `7 € / mesiac`, light customization boundary, and both standard/custom CTAs.
+
+### A8 — Pilot happy path
 
 Valid form + privacy + valid Turnstile sends exactly one email and shows success only after delivery.
 
-### A8 — Pilot invalid input
+### A9 — Pilot invalid input
 
-No email; field errors are displayed and values remain available for correction.
+No email; field errors are shown and values remain available for correction.
 
-### A9 — Stale Turnstile
+### A10 — Stale Turnstile
 
 No email; safe error and reset.
 
-### A10 — Support separation
+### A11 — SEO coverage
 
-Existing-client technical issue routes to `/support`, not to sales.
+`/officeflow` and `/kontakt` have canonical metadata, appear in sitemap, and are covered by rendered-route tests.
 
-### A11 — Unsupported accounting claim
+### A12 — Indexing consistency
 
-Full year closing or tax filing receives a boundary explanation, not a guaranteed capability claim.
+When `PUBLIC_INDEXING_ENABLED = true`, metadata, robots, and tests all expect index/follow and crawling.
 
-### A12 — SEO coverage
-
-`/officeflow` and `/kontakt` have canonical metadata, appear in sitemap and are covered by rendered-route tests.
-
-### A13 — Indexing consistency
-
-When `PUBLIC_INDEXING_ENABLED = true`, metadata, robots and tests all expect index/follow and crawling. Any rollback changes all layers consistently.
-
-### A14 — Local commit preservation
+### A13 — Local commit preservation
 
 Implementation starts from and preserves `3a551dd...`; no hard reset or silent overwrite occurs.
 
-### A15 — Demo preservation
+### A14 — Demo preservation
 
-The current non-autoplay user-controlled demo remains available and is recontextualized as OfficeFlow product evidence.
+The current non-autoplay demo remains accessible and is recontextualized as OfficeFlow product evidence.
 
-### A16 — Mobile navigation
+### A15 — Mobile navigation
 
-OfficeFlow, custom automation and the main CTA remain reachable without horizontal overflow on a narrow mobile viewport.
+OfficeFlow standard, OfficeFlow custom, general custom automation, and support paths remain reachable on a narrow viewport.
 
-## 15. Out Of Scope
+---
+
+## 16. Out Of Scope
 
 - OfficeFlow/FakturaBot runtime changes;
-- new bot actions or FSMs;
+- new Telegram actions or FSMs;
+- payment and subscription billing implementation;
+- user onboarding implementation;
 - new OfficeFlow contact API;
 - CRM or lead database;
-- payment and subscription billing implementation;
-- user accounts or onboarding;
 - Google OAuth changes;
 - Cloudflare email or Turnstile changes;
 - DNS/domain changes;
 - analytics/cookie system;
 - unsupported testimonials or case studies;
 - final legal review;
-- tariff matrix beyond the approved `od 7 € / mesiac` statement;
-- pricing of customization, hosting, integrations and non-standard work.
+- exact tariff matrix beyond `od 7 € / mesiac`;
+- exact production implementation price after pilot.
 
-## 16. Evidence Index
+### Unresolved Product Truth
 
-Repository evidence reviewed from remote baseline:
+The following require explicit owner approval or repository evidence before public publication:
+
+- bank-statement availability;
+- Gmail intake as a customer-facing OfficeFlow function;
+- monthly closing preparation boundary;
+- annual closing preparation boundary;
+- WhatsApp support;
+- cashflow, VAT, tax, or full-accounting analytics.
+
+---
+
+## 17. Evidence Index
+
+### Remote repository evidence
 
 - `app/page.tsx`
 - `app/site-chrome.tsx`
@@ -521,14 +672,20 @@ Repository evidence reviewed from remote baseline:
 - `worker/pilot-application.ts`
 - `tests/rendered-html.test.mjs`
 
-Product-owner statements approved in conversation:
+### Product-owner statements approved in conversation
 
-- ZevsFlow is custom automation;
-- OfficeFlow is the product;
+- ZevsFlow is the custom automation brand and delivery model;
+- OfficeFlow is the owner's existing Telegram bot/product;
+- additional users can be connected to OfficeFlow;
 - the seven listed OfficeFlow capabilities already work;
-- OfficeFlow starts from `7 € / mesiac` when existing functionality is sufficient;
-- the `200 €` pilot belongs only to custom automation;
+- standard OfficeFlow on ZevsFlow infrastructure starts from `7 € / mesiac`;
+- light configuration such as invoice and work-time sheet layouts is possible in the standard model;
+- OfficeFlow on the customer's server or with broad changes routes through a ZevsFlow pilot;
+- a custom client assistant may use any customer-selected name;
+- the `200 €` pilot covers one bounded custom process;
 - local commit `3a551dd...` is clean and must be preserved.
+
+---
 
 ## Architecture Review Gate
 
@@ -536,10 +693,10 @@ This proof is **not yet `ready_for_handoff`**.
 
 It may become `ready_for_handoff` only after:
 
-1. product-owner approval of the route and conversion separation;
+1. product-owner approval of this corrected OfficeFlow/ZevsFlow commercial boundary;
 2. inspection and reconciliation of local commit `3a551dd...`;
-3. explicit resolution or exclusion of bank statements, closing preparation, Gmail and WhatsApp wording;
-4. approval of the V1 OfficeFlow `mailto:` contact mechanism;
+3. explicit resolution or exclusion of bank statements, closing preparation, Gmail, and WhatsApp wording;
+4. approval of the V1 contact mechanism;
 5. reconciliation of the indexing-test contradiction.
 
 After approval, create:
