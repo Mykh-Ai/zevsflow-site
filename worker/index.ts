@@ -6,8 +6,12 @@ import {
   handlePilotConfigRequest,
   type PilotApplicationEnv,
 } from "./pilot-application";
+import {
+  handleGoogleOAuthGateway,
+  type GoogleOAuthGatewayEnv,
+} from "./google-oauth-gateway";
 
-interface Env extends PilotApplicationEnv {
+interface Env extends PilotApplicationEnv, GoogleOAuthGatewayEnv {
   ASSETS: Fetcher;
   DB?: D1Database;
   IMAGES?: {
@@ -40,6 +44,10 @@ const worker = {
 
     if (url.pathname === "/api/pilot-application") {
       return handlePilotApplicationRequest(request, env);
+    }
+
+    if (url.pathname === "/oauth/google/integration/callback") {
+      return handleGoogleOAuthGateway(request, env);
     }
 
     if (url.pathname === "/_vinext/image" && env.IMAGES) {
