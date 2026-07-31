@@ -23,7 +23,7 @@ async function fetchRoute(path, suffix, env = {}) {
   );
 }
 
-test("renders production-ready ZevsFlow metadata and keeps indexing disabled", async () => {
+test("renders production-ready ZevsFlow metadata with public indexing enabled", async () => {
   const response = await fetchRoute("/", "metadata");
   const html = await response.text();
   const legacyBrand = ["Office", "Flow"].join("");
@@ -36,7 +36,7 @@ test("renders production-ready ZevsFlow metadata and keeps indexing disabled", a
   assert.match(html, /<title>ZevsFlow — AI automatizácia na mieru<\/title>/i);
   assert.match(
     html,
-    /<meta(?=[^>]*\bname="robots")(?=[^>]*\bcontent="noindex, nofollow")[^>]*>/i,
+    /<meta(?=[^>]*\bname="robots")(?=[^>]*\bcontent="index, follow")[^>]*>/i,
   );
   assert.match(
     html,
@@ -119,7 +119,8 @@ test("serves robots and sitemap from the canonical domain", async () => {
 
   assert.equal(robotsResponse.status, 200);
   assert.match(robots, /User-Agent:\s*\*/i);
-  assert.match(robots, /Disallow:\s*\//i);
+  assert.match(robots, /Allow:\s*\//i);
+  assert.doesNotMatch(robots, /Disallow:\s*\//i);
   assert.match(robots, /Sitemap:\s*https:\/\/zevsflow\.sk\/sitemap\.xml/i);
   assert.match(robots, /Host:\s*https:\/\/zevsflow\.sk/i);
 
