@@ -11,7 +11,6 @@ const ALLOWED_PARAMETERS = new Set([
 const MAX_QUERY_PARAMETERS = 7;
 const MAX_VALUE_LENGTH = 4096;
 const MAX_PAYLOAD_BYTES = 8192;
-const UPSTREAM_TIMEOUT_MS = 8000;
 
 export interface GoogleOAuthGatewayEnv {
   GOOGLE_INTEGRATION_CALLBACK_UPSTREAM_URL?: string;
@@ -19,9 +18,9 @@ export interface GoogleOAuthGatewayEnv {
 }
 
 export interface GoogleOAuthGatewayDeps {
-  fetch: typeof fetch;
+  now: () => number;
+  sign: (secret: string, payload: string) => Promise<string>;
 }
-
 type CallbackPayload = {
   state: string;
   code?: string;
@@ -31,7 +30,10 @@ type CallbackPayload = {
 export async function handleGoogleOAuthGateway(
   request: Request,
   env: GoogleOAuthGatewayEnv,
-  deps: GoogleOAuthGatewayDeps = { fetch },
+  deps: GoogleOAuthGatewayDeps = {
+    now: Date.now,
+    sign: hmacSha256,
+  },
 ): Promise<Response> {
   if (request.method !== "GET") {
     return html(false, 405, { Allow: "GET" });
@@ -45,28 +47,37 @@ export async function handleGoogleOAuthGateway(
   if (!parsed) {
     return html(false, 400);
   }
-  let response: Response;
+  const relay = {
+    ...parsed,
+    issued_at: Math.floor(deps.now() / 1000),
+  };
+  const encoded = base64UrlEncode(JSON.stringify(relay));
+  let signature: string;
   try {
-    response = await deps.fetch(upstream, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "x-zevsflow-callback-secret": secret,
-      },
-      body: JSON.stringify(parsed),
-      redirect: "error",
-      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
-    });
+    signature = await deps.sign(secret, encoded);
   } catch (error) {
-    console.error("google_oauth_gateway_upstream_fetch_failed", {
+    console.error("google_oauth_gateway_relay_sign_failed", {
       errorName: error instanceof Error ? error.name : "UnknownError",
-      errorMessage: error instanceof Error ? error.message : "Unknown upstream fetch failure",
     });
     return html(false, 502);
   }
-  return response.ok ? html(true, 200) : html(false, 400);
+  const target = new URL(upstream);
+  target.search = new URLSearchParams({
+    payload: encoded,
+    signature,
+  }).toString();
+  return new Response(null, {
+    status: 302,
+    headers: {
+      location: target.href,
+      "cache-control": "no-store",
+      "content-security-policy": "default-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+      "referrer-policy": "no-referrer",
+      "x-robots-tag": "noindex, nofollow",
+      "x-content-type-options": "nosniff",
+    },
+  });
 }
-
 function boundedPayload(url: URL): CallbackPayload | null {
   const entries = [...url.searchParams.entries()];
   if (entries.length === 0 || entries.length > MAX_QUERY_PARAMETERS) {
@@ -97,6 +108,27 @@ function boundedPayload(url: URL): CallbackPayload | null {
   return payload;
 }
 
+function base64UrlEncode(value: string): string {
+  const bytes = new TextEncoder().encode(value);
+  let binary = "";
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary).replaceAll("+", "-").replaceAll("/", "_").replace(/=+$/u, "");
+}
+
+async function hmacSha256(secret: string, payload: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const digest = await crypto.subtle.sign("HMAC", key, encoder.encode(payload));
+  return [...new Uint8Array(digest)]
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+}
 function html(success: boolean, status: number, extraHeaders: HeadersInit = {}): Response {
   const title = success ? "Pripojenie bolo dokončené" : "Pripojenie sa nepodarilo";
   const message = success
