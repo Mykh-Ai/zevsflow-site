@@ -57,7 +57,11 @@ export async function handleGoogleOAuthGateway(
       redirect: "error",
       signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
     });
-  } catch {
+  } catch (error) {
+    console.error("google_oauth_gateway_upstream_fetch_failed", {
+      errorName: error instanceof Error ? error.name : "UnknownError",
+      errorMessage: error instanceof Error ? error.message : "Unknown upstream fetch failure",
+    });
     return html(false, 502);
   }
   return response.ok ? html(true, 200) : html(false, 400);
