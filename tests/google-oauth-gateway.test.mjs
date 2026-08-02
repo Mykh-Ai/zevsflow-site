@@ -73,6 +73,24 @@ test("relays only bounded callback fields with a signed short-lived payload", as
 });
 
 
+test("accepts Google's RFC 9207 issuer without relaying it upstream", async () => {
+  const response = await handleGoogleOAuthGateway(
+    new Request(
+      "https://zevsflow.sk/oauth/google/integration/callback?state=state-token&code=code-token&iss=https%3A%2F%2Faccounts.google.com",
+    ),
+    env,
+    relayDeps(),
+  );
+
+  assert.equal(response.status, 302);
+  assert.deepEqual(decodedRelay(response).body, {
+    state: "state-token",
+    code: "code-token",
+    issued_at: Math.floor(fixedNow / 1000),
+  });
+});
+
+
 test("relays a bounded Google rejection without provider description", async () => {
   const response = await handleGoogleOAuthGateway(
     new Request(
@@ -106,6 +124,7 @@ test("rejects missing state, duplicate, unknown, and oversized parameters", asyn
     "https://zevsflow.sk/oauth/google/integration/callback?code=x",
     "https://zevsflow.sk/oauth/google/integration/callback?state=a&state=b&code=x",
     "https://zevsflow.sk/oauth/google/integration/callback?state=a&code=x&unknown=y",
+    "https://zevsflow.sk/oauth/google/integration/callback?state=a&code=x&iss=https%3A%2F%2Fevil.example",
     "https://zevsflow.sk/oauth/google/integration/callback?state=a&code=" + "x".repeat(4097),
   ];
   for (const url of urls) {
