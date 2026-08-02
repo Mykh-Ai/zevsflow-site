@@ -110,6 +110,7 @@ function html(success: boolean, status: number, extraHeaders: HeadersInit = {}):
       "cache-control": "no-store",
       "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
       "referrer-policy": "no-referrer",
+      "x-robots-tag": "noindex, nofollow",
       "x-content-type-options": "nosniff",
       ...extraHeaders,
     },

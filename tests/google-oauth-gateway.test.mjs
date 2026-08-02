@@ -35,6 +35,7 @@ test("forwards only bounded callback fields and keeps the secret server-side", a
     state: "state-token",
     code: "code-token",
   });
+  assert.equal(response.headers.get("x-robots-tag"), "noindex, nofollow");
   const browser = await response.text();
   assert.doesNotMatch(browser, /state-token|code-token|backend\.example|ssss/);
 });
