@@ -1,6 +1,6 @@
 # Google Gmail OAuth callback gateway
 
-Status: implemented locally; production transport configuration is external.
+Status: implemented and deployed; Google consent and verified grant remain setup-dependent.
 
 The Worker exposes GET /oauth/google/integration/callback.
 
@@ -19,8 +19,10 @@ access.
 
 ## Signed relay contract
 
-The public callback accepts only bounded Google response parameters. It keeps
-only state plus exactly one of code or error, adds an issuance timestamp,
+The public callback accepts only bounded Google response parameters. It validates
+Google's RFC 9207 issuer parameter as exactly https://accounts.google.com without
+relaying it. It keeps only state plus exactly one of code or error, adds an
+issuance timestamp,
 serializes the bounded payload as base64url, and authenticates that exact
 encoded value with HMAC-SHA256 using the proxy secret.
 

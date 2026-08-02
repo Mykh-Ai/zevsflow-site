@@ -7,8 +7,9 @@ const ALLOWED_PARAMETERS = new Set([
   "scope",
   "authuser",
   "prompt",
+  "iss",
 ]);
-const MAX_QUERY_PARAMETERS = 7;
+const MAX_QUERY_PARAMETERS = 8;
 const MAX_VALUE_LENGTH = 4096;
 const MAX_PAYLOAD_BYTES = 8192;
 
@@ -96,6 +97,10 @@ function boundedPayload(url: URL): CallbackPayload | null {
   const state = normalize(url.searchParams.get("state"));
   const code = normalize(url.searchParams.get("code"));
   const error = normalize(url.searchParams.get("error"));
+  const issuer = normalize(url.searchParams.get("iss"));
+  if (issuer && issuer !== "https://accounts.google.com") {
+    return null;
+  }
   if (!state || (!code && !error) || (code && error)) {
     return null;
   }
