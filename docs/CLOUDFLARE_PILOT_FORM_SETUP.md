@@ -7,25 +7,26 @@ The repository contains the `/pilot` page and the Worker endpoints:
 
 The form remains fail-closed until the Cloudflare account has a Turnstile widget, two Worker secrets, and the verified email destination used by the `EMAIL` binding.
 
-## 1. Verify the destination Gmail address
+## 1. Verify the private destination address
 
 In the Cloudflare dashboard for the account that owns `zevsflow.sk`:
 
 1. Open **Email** / **Email Routing** or **Email Service**.
-2. Add `officezevs2024@gmail.com` as a destination address.
-3. Open the verification email in Gmail and confirm the destination.
+2. Add the private form mailbox as a destination address. Keep its literal address out of Git and public site content.
+3. Open the verification email in that mailbox and confirm the destination.
 4. Keep Cloudflare DNS authoritative for `zevsflow.sk`.
 
-The repository declares a restricted send binding:
+The repository declares the send binding without embedding its private destination:
 
 ```ts
 send_email: [
   {
     name: "EMAIL",
-    destination_address: "officezevs2024@gmail.com",
   },
 ]
 ```
+
+Cloudflare allows this binding to send only to verified destination addresses in the account. The Worker additionally requires the private `PILOT_EMAIL_RECIPIENT` runtime secret and uses it as the sole recipient.
 
 Do not rename the binding unless `worker/index.ts` and `worker/pilot-application.ts` are updated at the same time.
 
@@ -69,16 +70,16 @@ Open the `zevsflow-site` Worker and add these encrypted secrets:
 ```text
 TURNSTILE_SITE_KEY=<Turnstile site key>
 TURNSTILE_SECRET_KEY=<Turnstile secret key>
+PILOT_EMAIL_RECIPIENT=<private verified destination address>
 ```
 
 Although a Turnstile site key is public by design, it is kept as a runtime secret here so a normal code deployment does not need to contain account-specific values.
 
-Do not commit either value to GitHub.
+Do not commit any of these values to GitHub.
 
-Optional variables are supported but normally unnecessary because safe defaults are already in code:
+An optional sender override is supported:
 
 ```text
-PILOT_EMAIL_RECIPIENT=officezevs2024@gmail.com
 PILOT_EMAIL_FROM=pilot@zevsflow.sk
 ```
 
@@ -98,7 +99,7 @@ Expected response:
 {
   "enabled": true,
   "siteKey": "<public site key>",
-  "fallbackEmail": "officezevs2024@gmail.com"
+  "fallbackEmail": "info@zevsflow.sk"
 }
 ```
 
@@ -116,7 +117,7 @@ Use a real browser on `https://zevsflow.sk/pilot`.
 1. Confirm that Turnstile loads.
 2. Submit a complete test application.
 3. Confirm that the page shows the success message only after delivery.
-4. Confirm that exactly one email arrives at `officezevs2024@gmail.com`.
+4. Confirm that exactly one email arrives at the private form mailbox.
 5. Confirm that replying to the email addresses the applicant.
 6. Submit an invalid form and confirm that no email arrives.
 7. Wait more than five minutes before submitting and confirm that an expired Turnstile token fails safely.
@@ -140,5 +141,5 @@ Then re-run lint and tests, deploy, verify `/robots.txt` and `/sitemap.xml`, and
 If form delivery fails after deployment:
 
 - remove or disable one of the Turnstile secrets to make `/api/pilot-config` return `enabled: false`;
-- the page will show the direct Gmail fallback instead of pretending that online submission works;
+- the page will show the public `info@zevsflow.sk` fallback instead of pretending that online submission works;
 - keep `PUBLIC_INDEXING_ENABLED = false` until the problem is resolved.

@@ -1,5 +1,5 @@
 const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
-const DEFAULT_RECIPIENT = "officezevs2024@gmail.com";
+const PUBLIC_FALLBACK_EMAIL = "info@zevsflow.sk";
 const DEFAULT_SENDER = "pilot@zevsflow.sk";
 const MAX_BODY_BYTES = 20_000;
 const TURNSTILE_ACTION = "pilot_application";
@@ -256,7 +256,7 @@ function isSameOrigin(request: Request): boolean {
 function configuration(env: PilotApplicationEnv) {
   const siteKey = normalizeString(env.TURNSTILE_SITE_KEY);
   const secretKey = normalizeString(env.TURNSTILE_SECRET_KEY);
-  const recipient = normalizeString(env.PILOT_EMAIL_RECIPIENT) || DEFAULT_RECIPIENT;
+  const recipient = normalizeString(env.PILOT_EMAIL_RECIPIENT);
   const sender = normalizeString(env.PILOT_EMAIL_FROM) || DEFAULT_SENDER;
   const enabled = Boolean(siteKey && secretKey && env.EMAIL && recipient && sender);
 
@@ -272,7 +272,7 @@ export function handlePilotConfigRequest(request: Request, env: PilotApplication
   return json({
     enabled: config.enabled,
     siteKey: config.enabled ? config.siteKey : null,
-    fallbackEmail: config.recipient,
+    fallbackEmail: PUBLIC_FALLBACK_EMAIL,
   });
 }
 
@@ -446,7 +446,7 @@ export async function handlePilotApplicationRequest(
         ok: false,
         code: "FORM_UNAVAILABLE",
         message: "Formulár je dočasne nedostupný. Napíšte nám priamo email.",
-        fallbackEmail: config.recipient,
+        fallbackEmail: PUBLIC_FALLBACK_EMAIL,
       },
       503,
     );
@@ -525,7 +525,7 @@ export async function handlePilotApplicationRequest(
         ok: false,
         code: "DELIVERY_ERROR",
         message: "Žiadosť sa nepodarilo doručiť. Skúste to znova alebo nám napíšte priamo email.",
-        fallbackEmail: config.recipient,
+        fallbackEmail: PUBLIC_FALLBACK_EMAIL,
       },
       502,
     );

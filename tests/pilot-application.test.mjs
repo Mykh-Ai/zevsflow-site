@@ -26,7 +26,7 @@ function configuredEnv(sent) {
   return {
     TURNSTILE_SITE_KEY: "site-key",
     TURNSTILE_SECRET_KEY: "secret-key",
-    PILOT_EMAIL_RECIPIENT: "officezevs2024@gmail.com",
+    PILOT_EMAIL_RECIPIENT: "private-recipient@example.test",
     PILOT_EMAIL_FROM: "pilot@zevsflow.sk",
     EMAIL: {
       async send(message) {
@@ -98,6 +98,16 @@ test("keeps the public config fail-closed until all bindings exist", async () =>
   assert.equal(disabledBody.enabled, false);
   assert.equal(disabledBody.siteKey, null);
 
+  const missingPrivateRecipientEnv = configuredEnv([]);
+  delete missingPrivateRecipientEnv.PILOT_EMAIL_RECIPIENT;
+  const missingPrivateRecipient = handlePilotConfigRequest(
+    new Request("https://zevsflow.sk/api/pilot-config"),
+    missingPrivateRecipientEnv,
+  );
+  const missingPrivateRecipientBody = await missingPrivateRecipient.json();
+  assert.equal(missingPrivateRecipientBody.enabled, false);
+  assert.equal(missingPrivateRecipientBody.fallbackEmail, "info@zevsflow.sk");
+
   const sent = [];
   const enabled = handlePilotConfigRequest(
     new Request("https://zevsflow.sk/api/pilot-config"),
@@ -106,7 +116,21 @@ test("keeps the public config fail-closed until all bindings exist", async () =>
   const enabledBody = await enabled.json();
   assert.equal(enabledBody.enabled, true);
   assert.equal(enabledBody.siteKey, "site-key");
-  assert.equal(enabledBody.fallbackEmail, "officezevs2024@gmail.com");
+  assert.equal(enabledBody.fallbackEmail, "info@zevsflow.sk");
+});
+
+test("returns the public contact address when the form is unavailable", async () => {
+  const response = await handlePilotApplicationRequest(
+    requestFor(validApplication),
+    {},
+    validDeps(),
+  );
+  const body = await response.json();
+
+  assert.equal(response.status, 503);
+  assert.equal(body.ok, false);
+  assert.equal(body.code, "FORM_UNAVAILABLE");
+  assert.equal(body.fallbackEmail, "info@zevsflow.sk");
 });
 
 test("sends one escaped email after successful Turnstile verification", async () => {
@@ -124,7 +148,7 @@ test("sends one escaped email after successful Turnstile verification", async ()
   assert.equal(response.status, 200);
   assert.equal(body.ok, true);
   assert.equal(sent.length, 1);
-  assert.equal(sent[0].to, "officezevs2024@gmail.com");
+  assert.equal(sent[0].to, "private-recipient@example.test");
   assert.equal(sent[0].replyTo.email, "jan@example.com");
   assert.match(sent[0].subject, /ZevsFlow pilot:/);
   assert.match(sent[0].html, /&lt;script&gt;/);
@@ -200,5 +224,5 @@ test("reports delivery failure without claiming the application was received", a
   assert.equal(response.status, 502);
   assert.equal(body.ok, false);
   assert.equal(body.code, "DELIVERY_ERROR");
-  assert.equal(body.fallbackEmail, "officezevs2024@gmail.com");
+  assert.equal(body.fallbackEmail, "info@zevsflow.sk");
 });
