@@ -102,7 +102,8 @@ is enabled only when the Worker has both Turnstile secrets and the restricted
 is enabled for `zevsflow.sk` and the destination Gmail address is verified.
 Submissions are validated deterministically, verified through Turnstile
 Siteverify, and sent to `officezevs2024@gmail.com`. The Worker does not create a
-D1, KV, or R2 lead record.
+D1, KV, or R2 lead record. Public contact and form fallback links use
+`info@zevsflow.sk`; the Gmail address remains an internal delivery detail.
 
 Cloudflare account setup and live acceptance steps are documented in
 `docs/CLOUDFLARE_PILOT_FORM_SETUP.md`.

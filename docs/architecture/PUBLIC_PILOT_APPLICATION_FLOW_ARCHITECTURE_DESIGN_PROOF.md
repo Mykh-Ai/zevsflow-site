@@ -117,7 +117,7 @@ Validation owner: deterministic Worker code. No LLM, STT, or inference is used.
 | custom automation CTA | `/pilot` | none | Next route | `/pilot` page | form page |
 | config request | `GET /api/pilot-config` | method/path | Worker router | config handler | enabled/site key or disabled |
 | form submit | `POST /api/pilot-application` | method, body size, content type, origin, config, validation, Turnstile | deterministic validator | application handler | email sent or explicit error |
-| direct email fallback | `mailto:` | user-controlled email client | none | Gmail mailbox | manual contact |
+| direct email fallback | `mailto:info@zevsflow.sk` | user-controlled email client | none | Email Routing to Gmail mailbox | manual contact |
 
 Public routing happens once in `worker.fetch`: API paths are intercepted; all other routes converge to the existing vinext handler.
 
@@ -215,7 +215,7 @@ Validation outcome: show a concise general message and field-level errors; keep 
 
 Turnstile outcome: explain that verification expired or failed and ask the visitor to try again; reset widget.
 
-Delivery/config outcome: do not claim receipt. Preserve form data and offer direct email to `officezevs2024@gmail.com`.
+Delivery/config outcome: do not claim receipt. Preserve form data and offer the public email `info@zevsflow.sk`; delivery remains routed internally to the configured Gmail mailbox.
 
 Keyboard: native website controls only. No bot keyboard.
 
@@ -267,7 +267,7 @@ The change must not:
 - accept file uploads;
 - create a public payment flow;
 - store leads in D1/R2/KV;
-- expose Turnstile secrets or email-binding credentials;
+- expose Turnstile secrets, email-binding credentials, or the internal Gmail delivery address;
 - log contact form content;
 - promise implementation for a fixed `750 €`;
 - enable public indexing before live production acceptance;
@@ -346,7 +346,7 @@ Precondition: binding unavailable or send throws.
 
 Expected side effect: no claimed success.
 
-Expected outcome: fields preserved, direct Gmail fallback shown.
+Expected outcome: fields preserved, public `info@zevsflow.sk` fallback shown.
 
 ### Scenario 9 — Oversized request
 

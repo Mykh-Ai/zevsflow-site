@@ -36,6 +36,7 @@ export function SiteFooter() {
         <div>
           <strong>Prevádzkovateľ</strong>
           <p>Zevs s. r. o.<br />IČO: 56055552<br />Bratislava, Slovensko</p>
+          <a className="footer-link" href="mailto:info@zevsflow.sk">info@zevsflow.sk</a>
           <Link className="footer-link" href="/support">Kontakt a podpora</Link>
         </div>
         <nav aria-label="Právne informácie">

@@ -97,6 +97,8 @@ test("renders product, pilot, security, and public information routes", async ()
     assert.match(html, /<main[^>]*id="main"/i, route);
     assert.match(html, /href="\/privacy"/i, route);
     assert.match(html, /href="\/google-data"/i, route);
+    assert.match(html, /mailto:info@zevsflow\.sk/i, route);
+    assert.doesNotMatch(html, /officezevs2024@gmail\.com/i, route);
   }
 });
 
@@ -141,7 +143,7 @@ test("keeps the pilot form disabled until Cloudflare runtime bindings are config
   assert.equal(response.status, 200);
   assert.equal(body.enabled, false);
   assert.equal(body.siteKey, null);
-  assert.equal(body.fallbackEmail, "officezevs2024@gmail.com");
+  assert.equal(body.fallbackEmail, "info@zevsflow.sk");
 });
 
 test("renders a branded 404 page with a real 404 status", async () => {

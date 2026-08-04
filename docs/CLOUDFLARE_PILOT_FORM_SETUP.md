@@ -98,7 +98,7 @@ Expected response:
 {
   "enabled": true,
   "siteKey": "<public site key>",
-  "fallbackEmail": "officezevs2024@gmail.com"
+  "fallbackEmail": "info@zevsflow.sk"
 }
 ```
 
@@ -140,5 +140,5 @@ Then re-run lint and tests, deploy, verify `/robots.txt` and `/sitemap.xml`, and
 If form delivery fails after deployment:
 
 - remove or disable one of the Turnstile secrets to make `/api/pilot-config` return `enabled: false`;
-- the page will show the direct Gmail fallback instead of pretending that online submission works;
+- the page will show the public `info@zevsflow.sk` fallback instead of pretending that online submission works;
 - keep `PUBLIC_INDEXING_ENABLED = false` until the problem is resolved.

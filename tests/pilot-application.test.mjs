@@ -106,7 +106,21 @@ test("keeps the public config fail-closed until all bindings exist", async () =>
   const enabledBody = await enabled.json();
   assert.equal(enabledBody.enabled, true);
   assert.equal(enabledBody.siteKey, "site-key");
-  assert.equal(enabledBody.fallbackEmail, "officezevs2024@gmail.com");
+  assert.equal(enabledBody.fallbackEmail, "info@zevsflow.sk");
+});
+
+test("returns the public contact address when the form is unavailable", async () => {
+  const response = await handlePilotApplicationRequest(
+    requestFor(validApplication),
+    {},
+    validDeps(),
+  );
+  const body = await response.json();
+
+  assert.equal(response.status, 503);
+  assert.equal(body.ok, false);
+  assert.equal(body.code, "FORM_UNAVAILABLE");
+  assert.equal(body.fallbackEmail, "info@zevsflow.sk");
 });
 
 test("sends one escaped email after successful Turnstile verification", async () => {
@@ -200,5 +214,5 @@ test("reports delivery failure without claiming the application was received", a
   assert.equal(response.status, 502);
   assert.equal(body.ok, false);
   assert.equal(body.code, "DELIVERY_ERROR");
-  assert.equal(body.fallbackEmail, "officezevs2024@gmail.com");
+  assert.equal(body.fallbackEmail, "info@zevsflow.sk");
 });

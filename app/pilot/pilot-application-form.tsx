@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 
-const DEFAULT_FALLBACK_EMAIL = "officezevs2024@gmail.com";
+const DEFAULT_FALLBACK_EMAIL = "info@zevsflow.sk";
 const TURNSTILE_SCRIPT_ID = "zevsflow-turnstile-script";
 
 type TurnstileOptions = {
