@@ -17,12 +17,12 @@ Redirect domain: `https://zevsflow.eu` → `https://zevsflow.sk`
 - Canonical, Open Graph, Twitter, favicon, and Slovak locale metadata exist.
 - Legal and Google information routes exist.
 - A custom 404 page, `robots.txt`, and `sitemap.xml` are defined.
-- `info@zevsflow.sk` is the public contact; form delivery remains internal to `officezevs2024@gmail.com`.
+- `info@zevsflow.sk` is the public contact; the private form destination exists only in Cloudflare runtime configuration.
 - The public offer shows `Pilot za 200 €` and `Implementácia od 750 €`.
 - The site states that Zevs s. r. o. is not a VAT payer.
 - `/pilot` contains the approved scope, exclusions, non-binding notice, and short questionnaire.
 - The form accepts no files and takes no payment.
-- The Worker validates bounded fields, checks same-origin requests, verifies Turnstile server-side, and sends through a restricted email binding.
+- The Worker validates bounded fields, checks same-origin requests, verifies Turnstile server-side, and sends only to its private runtime recipient through the email binding.
 - The form stores no separate lead record in D1, KV, or R2.
 - Public preview/development commentary was removed from the visible site.
 
@@ -42,10 +42,10 @@ Both page metadata and `robots.txt` use this value. Do not change it until the b
 
 Complete the account-level steps in `docs/CLOUDFLARE_PILOT_FORM_SETUP.md`:
 
-- verify `officezevs2024@gmail.com` as the permitted destination;
+- verify the private form mailbox as a permitted destination;
 - ensure the `EMAIL` send binding can use `pilot@zevsflow.sk`;
 - create a Turnstile managed widget for `zevsflow.sk` and `www.zevsflow.sk`;
-- add `TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` as Worker secrets;
+- add `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`, and `PILOT_EMAIL_RECIPIENT` as Worker secrets;
 - deploy the reviewed commit;
 - confirm `/api/pilot-config` returns `enabled: true`;
 - submit a real test application;

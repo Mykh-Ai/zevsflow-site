@@ -1,5 +1,4 @@
 const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
-const DEFAULT_RECIPIENT = "officezevs2024@gmail.com";
 const PUBLIC_FALLBACK_EMAIL = "info@zevsflow.sk";
 const DEFAULT_SENDER = "pilot@zevsflow.sk";
 const MAX_BODY_BYTES = 20_000;
@@ -257,7 +256,7 @@ function isSameOrigin(request: Request): boolean {
 function configuration(env: PilotApplicationEnv) {
   const siteKey = normalizeString(env.TURNSTILE_SITE_KEY);
   const secretKey = normalizeString(env.TURNSTILE_SECRET_KEY);
-  const recipient = normalizeString(env.PILOT_EMAIL_RECIPIENT) || DEFAULT_RECIPIENT;
+  const recipient = normalizeString(env.PILOT_EMAIL_RECIPIENT);
   const sender = normalizeString(env.PILOT_EMAIL_FROM) || DEFAULT_SENDER;
   const enabled = Boolean(siteKey && secretKey && env.EMAIL && recipient && sender);
 

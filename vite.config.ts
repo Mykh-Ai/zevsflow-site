@@ -20,7 +20,6 @@ const localBindingConfig = {
   send_email: [
     {
       name: "EMAIL",
-      destination_address: "officezevs2024@gmail.com",
     },
   ],
   d1_databases: d1
