@@ -136,6 +136,30 @@ test("serves robots and sitemap from the canonical domain", async () => {
   assert.match(sitemap, /<loc>https:\/\/zevsflow\.sk\/data-deletion<\/loc>/i);
 });
 
+test("renders one self-referencing canonical in the HTML head for every sitemap URL", async () => {
+  const response = await fetchRoute("/sitemap.xml", "canonical-sitemap");
+  assert.equal(response.status, 200);
+
+  const sitemap = await response.text();
+  const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(([, url]) => url);
+  assert.ok(urls.length > 0, "the sitemap must list public pages");
+
+  for (const url of urls) {
+    const { origin, pathname } = new URL(url);
+    assert.equal(origin, "https://zevsflow.sk", url);
+
+    const page = await fetchRoute(pathname, `canonical-${pathname}`);
+    assert.equal(page.status, 200, url);
+    const html = await page.text();
+    const head = html.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i)?.[1];
+    assert.ok(head, url);
+    const canonicalLinks = [...head.matchAll(/<link\b(?=[^>]*\brel="canonical")([^>]*)>/gi)];
+    assert.deepEqual(canonicalLinks.map(([, attributes]) =>
+      attributes.match(/\bhref="([^"]+)"/i)?.[1],
+    ), [url], url);
+  }
+});
+
 test("keeps the pilot form disabled until Cloudflare runtime bindings are configured", async () => {
   const response = await fetchRoute("/api/pilot-config", "pilot-config");
   const body = await response.json();

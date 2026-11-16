@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { LegalLayout } from "../page-elements";
 
-export const metadata: Metadata = { title: "Používanie údajov Google | ZevsFlow", description: "Ako ZevsFlow plánuje pristupovať k údajom Google Drive alebo Gmailu a ako možno pripojenie zrušiť." };
+export const metadata: Metadata = {
+  alternates: { canonical: "/google-data" },
+  title: "Používanie údajov Google | ZevsFlow",
+  description: "Ako ZevsFlow plánuje pristupovať k údajom Google Drive alebo Gmailu a ako možno pripojenie zrušiť.",
+};
 
 export default function GoogleDataPage() {
   return <LegalLayout title="Používanie údajov Google" intro="Táto stránka opisuje plánované zásady Google integrácie. Produkčné oprávnenia budú zverejnené podľa funkcií, ktoré ZevsFlow skutočne spustí.">

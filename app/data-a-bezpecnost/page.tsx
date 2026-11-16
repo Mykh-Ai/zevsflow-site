@@ -3,6 +3,7 @@ import Link from "next/link";
 import { PageHero } from "../page-elements";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/data-a-bezpecnost" },
   title: "Dáta a bezpečnosť | ZevsFlow",
   description: "Ako ZevsFlow oddeľuje AI porozumenie od kontrolovaného vykonania, pracuje s Google údajmi a podporuje prevádzku na serveri klienta.",
 };

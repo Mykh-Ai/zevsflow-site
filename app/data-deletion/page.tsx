@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { LegalLayout } from "../page-elements";
 
-export const metadata: Metadata = { title: "Vymazanie údajov | ZevsFlow", description: "Ako požiadať ZevsFlow o vymazanie údajov a odvolať prístup ku Google účtu." };
+export const metadata: Metadata = {
+  alternates: { canonical: "/data-deletion" },
+  title: "Vymazanie údajov | ZevsFlow",
+  description: "Ako požiadať ZevsFlow o vymazanie údajov a odvolať prístup ku Google účtu.",
+};
 
 export default function DataDeletionPage() {
   return <LegalLayout title="Vymazanie údajov" intro="Tu nájdete spôsob, ako odpojiť Google integráciu a požiadať o vymazanie údajov zo žiadosti o pilot alebo z dohodnutého riešenia ZevsFlow.">
