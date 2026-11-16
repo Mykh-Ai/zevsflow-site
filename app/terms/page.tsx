@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { LegalLayout } from "../page-elements";
 
-export const metadata: Metadata = { title: "Podmienky používania | ZevsFlow", description: "Základné podmienky používania webu, žiadosti o pilot a riešení ZevsFlow." };
+export const metadata: Metadata = {
+  alternates: { canonical: "/terms" },
+  title: "Podmienky používania | ZevsFlow",
+  description: "Základné podmienky používania webu, žiadosti o pilot a riešení ZevsFlow.",
+};
 
 export default function TermsPage() {
   return <LegalLayout title="Podmienky používania" intro="Tieto podmienky opisujú základné pravidlá webu, žiadosti o pilot a zákazkových riešení ZevsFlow. Konkrétna implementácia sa riadi samostatnou ponukou a zmluvou.">

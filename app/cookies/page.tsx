@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { LegalLayout } from "../page-elements";
 
-export const metadata: Metadata = { title: "Cookies | ZevsFlow", description: "Informácie o cookies, bezpečnostných technológiách a meraní na webe ZevsFlow." };
+export const metadata: Metadata = {
+  alternates: { canonical: "/cookies" },
+  title: "Cookies | ZevsFlow",
+  description: "Informácie o cookies, bezpečnostných technológiách a meraní na webe ZevsFlow.",
+};
 
 export default function CookiesPage() {
   return <LegalLayout title="Cookies" intro="Web ZevsFlow nepoužíva Google Analytics, reklamné pixely, heatmapy ani marketingové cookies.">

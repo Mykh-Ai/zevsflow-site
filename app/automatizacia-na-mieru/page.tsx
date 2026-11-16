@@ -3,6 +3,7 @@ import Link from "next/link";
 import { PageHero } from "../page-elements";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/automatizacia-na-mieru" },
   title: "AI automatizácia na mieru | ZevsFlow",
   description: "Firemný AI asistent v Telegrame alebo WhatsAppe pre jeden jasne definovaný opakujúci sa proces. Pilot za 200 €.",
 };

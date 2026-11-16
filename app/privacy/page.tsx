@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { LegalLayout } from "../page-elements";
 
-export const metadata: Metadata = { title: "Ochrana súkromia | ZevsFlow", description: "Informácie o spracúvaní osobných údajov pri webe, žiadosti o pilot a službách ZevsFlow." };
+export const metadata: Metadata = {
+  alternates: { canonical: "/privacy" },
+  title: "Ochrana súkromia | ZevsFlow",
+  description: "Informácie o spracúvaní osobných údajov pri webe, žiadosti o pilot a službách ZevsFlow.",
+};
 
 export default function PrivacyPage() {
   return <LegalLayout title="Ochrana súkromia" intro="Táto stránka vysvetľuje spracúvanie osobných údajov pri používaní webu, obchodnej komunikácii, žiadosti o pilot, zákazkových implementáciách a prípadnej spravovanej službe ZevsFlow.">

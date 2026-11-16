@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalLayout } from "../page-elements";
 
-export const metadata: Metadata = { title: "Kontakt a podpora | ZevsFlow", description: "Kontakt pre obchodné otázky, podporu, ochranu súkromia a bezpečnostné hlásenia ZevsFlow." };
+export const metadata: Metadata = {
+  alternates: { canonical: "/support" },
+  title: "Kontakt a podpora | ZevsFlow",
+  description: "Kontakt pre obchodné otázky, podporu, ochranu súkromia a bezpečnostné hlásenia ZevsFlow.",
+};
 
 export default function SupportPage() {
   return <LegalLayout title="Kontakt a podpora" intro="Napíšte nám, s čím potrebujete pomôcť alebo ktorý opakujúci sa firemný proces chcete zjednodušiť.">

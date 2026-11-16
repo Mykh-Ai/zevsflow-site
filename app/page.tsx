@@ -1,5 +1,10 @@
-import { ProcessDemo } from "./process-demo";
+import type { Metadata } from "next";
 import Link from "next/link";
+import { ProcessDemo } from "./process-demo";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 const problems = [
   "Doklady zostávajú vo fotografiách a správach.",
